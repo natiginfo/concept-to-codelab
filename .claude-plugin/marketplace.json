@@ -1,0 +1,12 @@
+{
+  "name": "natiginfo-codelabs",
+  "description": "Tools for turning technical material into guided, self-paced lessons.",
+  "owner": { "name": "Natig Babayev" },
+  "plugins": [
+    {
+      "name": "concept-to-codelab",
+      "source": "./",
+      "description": "Turn technical concepts and course materials into self-paced codelabs with worked examples and practice."
+    }
+  ]
+}

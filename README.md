@@ -6,11 +6,24 @@ Turn lecture notes, workshop material, or a technical concept into a self-paced 
 
 ## Install
 
-With the [Skills CLI](https://github.com/vercel-labs/skills), run this from your project directory. The installer prompts for the agents to install to.
+### Skills CLI
+
+With Node.js 22.20 or later, run this from your project directory. The [Skills CLI](https://github.com/vercel-labs/skills) prompts you to choose the agents to install to.
 
 ```sh
 npx skills add natiginfo/concept-to-codelab --skill concept-to-codelab
 ```
+
+### Claude Code marketplace
+
+Add this repository as a marketplace and install the plugin from your terminal. [Claude Code marketplace docs](https://code.claude.com/docs/en/plugins/publish)
+
+```sh
+claude plugin marketplace add natiginfo/concept-to-codelab
+claude plugin install concept-to-codelab@natiginfo-codelabs
+```
+
+Start a Claude Code session and use `/concept-to-codelab:concept-to-codelab` followed by your lesson request.
 
 <details>
 <summary>Manual installation in Codex</summary>
