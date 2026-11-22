@@ -1,15 +1,16 @@
 ---
 name: concept-to-codelab
-description: Turn course material, technical concepts, or existing lessons into self-paced Codelabs-style lessons with sourced teaching visuals, worked examples, useful paper notes, a quick reference, and practice. Use for building or adapting a structured learning experience.
+description: Create or adapt a self-paced codelab, guided lab, or step-by-step technical lesson from a concept, lecture notes, course materials, or an existing lesson. Use when learners need a worked example, a quick reference, and practice with feedback.
+license: MIT
 ---
 
 # Concept to Codelab
 
 ## Plan the lesson
 
-- Read the user's source material and any existing lesson or project instructions first. Identify what the learner needs to explain, calculate, decide, or do by the end. Match the technical depth to that outcome.
-- Make the lesson usable by someone who missed earlier lessons. Teach only the prerequisites needed here. Start with a plain explanation, then name the term and explain why it matters. Work through one concrete example with intermediate steps before asking the learner to apply it to a different example.
-- For a short course unit, offer a roughly 20-minute route and a shorter route for a busy day. Use freely accessible steps with clear titles. In an interactive lesson, provide direct links, Back and Next, and Read all. Reuse the project's existing layout and generators when practical.
+- Read the available source material and project instructions. Reuse relevant notes with page or section references and consult the original where a claim or requirement needs checking. Identify what the learner should be able to explain, calculate, decide, or do by the end.
+- Teach the prerequisites needed to meet that outcome. Explain each new idea in plain language, name it, and show why it matters. Work through one concrete example with intermediate steps before asking learners to apply the idea to a fresh case.
+- Match the requested audience, duration, and format. For a short unit, offer a roughly 20-minute route when the content fits. If a shorter route would help, name the steps that still cover the objective and include a practice check. Reuse existing lesson structure and publishing tools where practical.
 
 ## Find and use teaching visuals
 
@@ -20,20 +21,18 @@ description: Turn course material, technical concepts, or existing lessons into 
 
 ## Make it useful for review
 
-Add a short **Worth writing down** box to each teaching step. Use one to three lines that still make sense on paper later. Include a rule, distinction, or formula and what it helps the learner calculate, decide, or interpret. Keep activity directions beside the activity.
-
-Example: “One filter position gives one output. Count where the whole filter fits to find the output size. A 2 × 2 filter moving one cell at a time on a 4 × 4 image fits in three starting rows and three starting columns, so the result is 3 × 3.”
-
-Add a compact **Quick reference** near the top of the lesson and just before the practice quiz in the reading order. Group entries by what the learner needs to do. For each entry, include the rule, a short reason, a tiny example where helpful, and a direct link to its teaching step. For web output, make the reference printable and check the print layout when the environment supports it.
+- End each teaching step with a **Worth writing down** note. In one to three lines, capture a rule, distinction, or formula and what it helps the learner do. Keep activity directions next to the activity.
+- Put a compact **Quick reference** where learners can find it at the start and return to it before practice. Maintain one copy and link to it from the other location if needed. Group entries by task and include the rule, a short reason, and a link or pointer to the teaching step. Add a tiny example where it clarifies the rule.
+- In interactive lessons, make steps directly reachable and preserve the project's navigation and progress behavior. For new navigation, include Back, Next, and a way to read the whole lesson when useful. Make the quick reference printable when the web format supports it and check the print layout when possible.
 
 ## Design the practice
 
-- Use choices and explanatory feedback. Use reorderable cards when the order matters and support touch and keyboard input. For every check, include the idea, a separate worked example, the correct answer, and feedback that explains the reasoning. Preserve existing saved quiz progress when adapting an application.
-- If the learner wants to write code locally, provide dependencies, setup commands, the task, test inputs, and expected outputs. Offer hints and a small challenge. Leave the implementation to the learner unless they request a solution. Verify expected outputs independently and distinguish file or runtime checks from calculations checked by hand.
-- When there is an assignment guide, link each task or reflection directly to the lesson step that teaches its reasoning. Say what to look for there. Distinguish official requirements from optional practice. Use the assignment itself as evidence where accessible, and label saved instructions as such.
+- Ask learners to apply the same reasoning to a new example. Give an answer and feedback that explains how to reach it. For multiple choice, use plausible mistakes as distractors and explain the misconception each represents. If an interactive ordering exercise uses drag and drop, provide a keyboard and touch alternative.
+- For a local coding exercise, give prerequisites, setup commands, a task, test inputs, expected outputs, and hints. Leave the implementation to the learner unless they ask for a solution. Verify expected results by running the exercise or checking the reasoning independently. State which checks were run.
+- If adapting an assignment, link each task or reflection to the step that teaches the relevant reasoning. Use the assignment itself as the authority when available. Label optional practice and indicate when a requirement comes from secondary notes or when the original could not be checked.
 
-## Work from evidence and deliver
+## Deliver and verify
 
 Reuse page-referenced notes before rereading source PDFs. When delegation is authorized and model choice is available, GPT-6 Luna is suitable for bounded tasks such as inventorying files and extracting slide text to page-referenced Markdown. Keep decisions about what to teach, checking calculations, interpreting requirements, and final validation with the main model.
 
-Deliver in the format the user asked for. In a repository, edit the maintained sources and regenerate outputs. Check links, worked results, quiz feedback, and representative pages. Report any limits on verification. Follow the project's publishing workflow when publication is in scope.
+Use the requested format. In a repository, edit the maintained source and regenerate any required outputs using the project's workflow. Check worked results, practice answers and feedback, and links. For an interactive adaptation, check representative steps, navigation, and existing saved progress where possible. Report any checks you could not run.
