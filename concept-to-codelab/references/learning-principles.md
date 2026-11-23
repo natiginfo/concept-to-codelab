@@ -12,7 +12,7 @@ The core idea: learners remember what they work to retrieve, not what they rerea
 
 **Apply.** Open each teaching step with one short prediction or attempt. Keep it low stakes and fast. Then explain the right answer and why a likely wrong answer fails.
 
-**Example.** "Before reading on: how many KiB is 3,072 bytes? Write a guess." Then work through the division.
+**Example.** "Before reading on: how many KiB is 3,072 bytes?" In Markdown, ask for a guess on paper. In an interactive lesson, offer choices such as 3, 3.072, and 3,145,728, and record the pick before the explanation. Then work through the division.
 
 **Avoid.** Long problems before any teaching. The attempt should take under a minute.
 
@@ -25,7 +25,8 @@ The core idea: learners remember what they work to retrieve, not what they rerea
 **Apply.**
 - From the second teaching step on, start with one recall question about the previous step.
 - In practice, ask for an answer from memory first. Use the quick reference only to check.
-- Prefer short-answer questions over recognition. Use multiple choice when the distractors teach a misconception.
+- Prefer recall over recognition: ask for a number, an order, or a term the learner must produce. Use multiple choice when the distractors teach a misconception.
+- In interactive lessons, the page must be able to check every answer. Use choices, exact numbers, or orderings. Do not add free-text boxes.
 
 **Avoid.** Telling learners to keep the quick reference open while they practice.
 
@@ -35,7 +36,7 @@ The core idea: learners remember what they work to retrieve, not what they rerea
 
 **Why.** Connections give the memory more cues to retrieve it later.
 
-**Apply.** Before the learner reads the provided **Worth writing down** note, ask them to write the rule in their own words. Then let them compare. In feedback, connect the rule to an idea the learner already knows.
+**Apply.** Before the learner reads the provided **Worth writing down** note, ask them to write the rule in their own words on paper. Then let them reveal the note and compare. In an interactive lesson, a fill-in-the-blank choice, such as "Divide bytes by ___", can check the key part of the rule. In feedback, connect the rule to an idea the learner already knows.
 
 ## Interleaving
 
@@ -69,7 +70,7 @@ The core idea: learners remember what they work to retrieve, not what they rerea
 
 **Why.** Reflection combines retrieval and elaboration.
 
-**Apply.** End with one reflection prompt, for example: "Which item tripped you up, and what will you check first next time?"
+**Apply.** End with one reflection prompt for the learner to answer on paper, for example: "Which item tripped you up, and what will you check first next time?" Do not add a text box for it.
 
 ## Desirable difficulty
 

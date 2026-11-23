@@ -22,7 +22,7 @@ Learners remember what they work to retrieve, not what they reread. Build effort
 - **Retrieve before review.** From the second teaching step on, start with one recall question about the previous step. The learner answers from memory, then checks.
 - **Interleave practice.** Mix problem types and do not follow the step order, so the learner must choose which rule applies.
 - **Calibrate.** Ask the learner to commit to an answer before showing it. Feedback names the misconception behind each likely wrong answer.
-- **Space and reflect.** End with two or three new review questions to answer later, such as the next day and the next week, and one reflection prompt.
+- **Space and reflect.** End with two or three new review questions to answer later, such as the next day and the next week, and one reflection prompt for the learner to answer on paper.
 - Do not tailor content to learning styles. Match the presentation to the content.
 
 ## Find and use teaching visuals
@@ -36,12 +36,13 @@ Read [references/visuals.md](references/visuals.md) for source preferences, pres
 
 ## Make it useful for review
 
-- End each teaching step with a **Worth writing down** note. Ask the learner to write the rule in their own words first, then show the provided note to compare. In one to three lines, the note captures a rule, distinction, or formula and what it helps the learner do. Keep activity directions next to the activity.
+- End each teaching step with a **Worth writing down** note. Ask the learner to write the rule on paper in their own words first, then reveal the provided note to compare. In one to three lines, the note captures a rule, distinction, or formula and what it helps the learner do. Keep activity directions next to the activity.
 - Put a compact **Quick reference** where learners can find it at the start and return to it after practice to check their answers. Maintain one copy and link to it from the other location if needed. Group entries by task and include the rule, a short reason, and a link or pointer to the teaching step. Add a tiny example where it clarifies the rule.
 - In interactive lessons, make steps directly reachable and preserve the project's navigation and progress behavior. For new navigation, include Back, Next, and a way to read the whole lesson when useful. Make the quick reference printable when the web format supports it and check the print layout when possible.
 
 ## Design the practice
 
+- In interactive lessons, make every answer checkable by the page: a choice, a number, or an order with one correct answer. Do not add free-text answer boxes. Put open-ended prompts, such as own-words notes and reflection, on paper, with a model answer to reveal.
 - Ask learners to apply the same reasoning to a new example and to answer from memory before any lookup. Give an answer and feedback that explains how to reach it. For multiple choice, use plausible mistakes as distractors and explain the misconception each represents. If an interactive ordering exercise uses drag and drop, provide a keyboard and touch alternative.
 - For a local coding exercise, give prerequisites, setup commands, a task, test inputs, expected outputs, and hints. Leave the implementation to the learner unless they ask for a solution. Verify expected results by running the exercise or checking the reasoning independently. State which checks were run.
 - If adapting an assignment, link each task or reflection to the step that teaches the relevant reasoning. Use the assignment itself as the authority when available. Label optional practice and indicate when a requirement comes from secondary notes or when the original could not be checked.
