@@ -50,7 +50,7 @@ In Codex, select `$concept-to-codelab` from your prompt.
 
 > Use $concept-to-codelab to write a 10-minute Markdown lesson for beginners on converting between bytes and KiB. Assume learners can divide whole numbers. Teach that 1 KiB equals 1,024 bytes, work through converting 3,072 bytes to KiB, and give a fresh practice problem with feedback.
 
-When adapting course materials, include the relevant pages, your audience, and what learners should be able to do by the end. You can use the same skill to turn an existing Markdown lesson into a guided lab or draft a coding exercise with setup steps, test inputs, and expected outputs.
+When adapting course materials, include the relevant pages, your audience, and what learners should be able to do by the end. The skill converts each PDF, slide deck, or document to page-referenced Markdown once and caches it in `~/.cache/concept-to-codelab/sources/`, keyed by file hash, so later lessons reuse the extract instead of rereading the file. The cache stays on your machine; delete the folder at any time. You can use the same skill to turn an existing Markdown lesson into a guided lab or draft a coding exercise with setup steps, test inputs, and expected outputs.
 
 ## Check a change
 

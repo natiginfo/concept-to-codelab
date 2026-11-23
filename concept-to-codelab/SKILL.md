@@ -9,6 +9,7 @@ license: MIT
 ## Plan the lesson
 
 - Read the available source material and project instructions. Reuse relevant notes with page or section references and consult the original where a claim or requirement needs checking. Identify what the learner should be able to explain, calculate, decide, or do by the end.
+- Convert each PDF, slide deck, or document to a page-referenced Markdown extract once, and reuse it in later sessions and projects. Check the user's source cache before reading the original. Follow [references/source-cache.md](references/source-cache.md) for the location, format, and privacy rules.
 - Teach the prerequisites needed to meet that outcome. Explain each new idea in plain language, name it, and show why it matters. Work through one concrete example with intermediate steps before asking learners to apply the idea to a fresh case.
 - Match the requested audience, duration, and format. When the request leaves them open, assume learners who are new to the topic but know its prerequisites, a roughly 20-minute route, and Markdown. Ask only when the source material leaves the learning outcome unclear. If a shorter route would help, name the steps that still cover the objective and include a practice check. Reuse existing lesson structure and publishing tools where practical.
 - When the project has no lesson structure, use this order: a header with time, goal, and prerequisites; the quick reference; one section per teaching step, titled by the task it teaches; practice; answers and feedback; review later.
