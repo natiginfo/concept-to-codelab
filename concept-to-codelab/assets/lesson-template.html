@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Convert between bytes and KiB</title>
+<!--
+  concept-to-codelab lesson template.
+  Replace the sample lesson with your own steps. Keep these patterns:
+  - Each step is a <section class="step" data-min="N">; add a matching link in the step list.
+  - Every answer is checked by the page. No free-text answer boxes.
+    Choice: <div class="quiz" data-answer="b"> with radios; data-fb on each radio explains it.
+    Number: <div class="quiz practice" data-kind="num" data-answer="7168"> with a text input.
+  - data-reveal="id" shows the element with that id after the learner checks.
+  - Own-words notes and reflection go on paper, with a model answer to reveal.
+  - Change STORAGE_KEY below so saved progress is per lesson.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=JetBrains+Mono:wght@400&display=swap">
+<style>
+/* Layout: sticky top bar; numbered step list on the left (drawer on phones); one step at a time with Back/Next, or "Read all". */
+:root {
+  --bg: #ffffff; --side: #f5f6f9; --fg: #1c2130; --muted: #596173; --line: #dde2ea; --code: #f3f5f8;
+  --bar: #22314a; --bar-fg: #ffffff; --bar-muted: #b9c4d8;
+  --accent: #2456c4; --accent-soft: #e7edfb; --on-accent: #ffffff;
+  --ok: #1d7a3b; --ok-soft: #e5f4ea; --bad: #b42318; --bad-soft: #fbe9e7; --warn: #8a5a00; --warn-soft: #fbf1dc;
+  --font: Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: "JetBrains Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121519; --side: #171b21; --fg: #e5e8ee; --muted: #a0a8b6; --line: #2a303a; --code: #1b2028;
+    --bar: #1a2436; --bar-fg: #f2f5fa; --bar-muted: #9fb0cc;
+    --accent: #8eaaff; --accent-soft: #1f2942; --on-accent: #10172a;
+    --ok: #74d394; --ok-soft: #16281d; --bad: #f28b80; --bad-soft: #2d1a18; --warn: #e6bb62; --warn-soft: #2b2312;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121519; --side: #171b21; --fg: #e5e8ee; --muted: #a0a8b6; --line: #2a303a; --code: #1b2028;
+  --bar: #1a2436; --bar-fg: #f2f5fa; --bar-muted: #9fb0cc;
+  --accent: #8eaaff; --accent-soft: #1f2942; --on-accent: #10172a;
+  --ok: #74d394; --ok-soft: #16281d; --bad: #f28b80; --bad-soft: #2d1a18; --warn: #e6bb62; --warn-soft: #2b2312;
+  color-scheme: dark;
+}
+
+[hidden] { display: none !important; }
+body { background: var(--bg); color: var(--fg); font: 16px/1.6 var(--font); }
+.stack { display: grid; gap: 16px; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bar); }
+
+/* Top bar */
+.topbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bar); color: var(--bar-fg); display: flex; align-items: center; gap: 12px; min-height: 56px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.tb-title { flex: 1; min-width: 0; display: grid; line-height: 1.25; }
+.tb-title small { color: var(--bar-muted); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; }
+.tb-title strong { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tb-right { display: flex; align-items: center; gap: 10px; font-size: .9rem; color: var(--bar-muted); }
+.tb-right #remaining { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.bar-btn { font: inherit; font-size: .9rem; color: var(--bar-fg); background: transparent; border: 1px solid var(--bar-muted); border-radius: 6px; padding: 6px 10px; cursor: pointer; white-space: nowrap; }
+.bar-btn[aria-pressed="true"] { background: var(--bar-fg); color: var(--bar); border-color: var(--bar-fg); }
+#menu { display: none; }
+
+/* Layout */
+.layout { display: grid; grid-template-columns: 272px minmax(0, 1fr); min-height: calc(100vh - 56px); }
+.steps { background: var(--side); border-right: 1px solid var(--line); padding-block: 20px; }
+.steps-inner { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 76px); display: grid; gap: 16px; padding-inline: 12px; }
+.steps ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.steps a { display: flex; align-items: center; gap: 12px; padding: 9px 12px; border-radius: 8px; color: var(--fg); text-decoration: none; }
+.steps a:hover { background: var(--accent-soft); }
+.steps .num { flex: none; display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid var(--muted); color: var(--muted); font-size: .8rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.steps a[aria-current="step"] { background: var(--accent-soft); font-weight: 700; }
+.steps a[aria-current="step"] .num { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.steps a.done .num { border-color: var(--accent); color: var(--accent); }
+.steps a.done .num::before { content: "✓"; }
+.steps a.done .num span { display: none; }
+.side-foot { border-top: 1px solid var(--line); padding: 14px 12px 0; font-size: .9rem; }
+.side-foot a { padding: 0; color: var(--accent); }
+
+main { min-width: 0; display: grid; grid-template-rows: 1fr auto; }
+.content { padding-block: 32px 48px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.step { max-width: 70ch; margin: 0 auto; display: grid; gap: 16px; }
+.reading-all .step + .step { margin-top: 56px; padding-top: 40px; border-top: 1px solid var(--line); }
+.step h1 { font-size: clamp(1.5rem, 3.5vw, 2rem); line-height: 1.2; margin: 0; text-wrap: balance; }
+.step h2 { font-size: 1.15rem; margin: 8px 0 0; }
+.step p { margin: 0; }
+.dur { color: var(--muted); font-size: .9rem; font-variant-numeric: tabular-nums; }
+.meta { display: grid; gap: 6px; margin: 0; }
+.meta div { display: grid; grid-template-columns: 9.5em 1fr; gap: 12px; }
+.meta dt { color: var(--muted); } .meta dd { margin: 0; }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 10px 14px 10px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: .82rem; color: var(--muted); }
+td a, .content a { color: var(--accent); }
+code { font-family: var(--mono); font-size: .88em; background: var(--code); border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; white-space: nowrap; }
+ol.work { margin: 0; padding-left: 1.3em; display: grid; gap: 4px; }
+
+.callout { border-radius: 10px; padding: 16px 18px; display: grid; gap: 10px; border: 1px solid var(--line); }
+.callout.try { background: var(--accent-soft); border-color: transparent; }
+.callout.note { border-style: dashed; border-color: var(--accent); }
+.tag { font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; font-weight: 700; color: var(--accent); }
+.paper { color: var(--muted); font-size: .95rem; }
+
+/* Quizzes */
+.choices { border: 0; margin: 0; padding: 0; display: grid; gap: 8px; }
+.choices label { display: flex; gap: 10px; align-items: center; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); cursor: pointer; }
+.choices label:has(input:checked) { border-color: var(--accent); }
+.choices label.right { border-color: var(--ok); background: var(--ok-soft); }
+.choices label.wrong { border-color: var(--bad); background: var(--bad-soft); }
+.choices input { accent-color: var(--accent); margin: 0; }
+.num-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.num-row input[type="text"] { font: inherit; color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; width: 11rem; max-width: 100%; font-variant-numeric: tabular-nums; }
+.num-row .unit { color: var(--muted); }
+.conf { border: 0; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.conf legend { float: left; margin-right: 6px; color: var(--muted); font-size: .9rem; }
+.conf label { display: inline-flex; gap: 6px; align-items: center; padding: 5px 12px; border: 1px solid var(--line); border-radius: 999px; cursor: pointer; font-size: .9rem; }
+.conf label:has(input:checked) { border-color: var(--accent); color: var(--accent); }
+.conf input { accent-color: var(--accent); margin: 0; }
+.btn { font: inherit; font-weight: 700; border-radius: 8px; padding: 9px 18px; cursor: pointer; border: 1px solid var(--accent); background: var(--accent); color: var(--on-accent); width: fit-content; }
+.btn.ghost { background: transparent; color: var(--accent); }
+.btn:disabled { opacity: .45; cursor: default; }
+.fb { margin: 0; padding: 10px 12px; border-radius: 8px; font-size: .95rem; }
+.fb:empty { display: none; }
+.fb.ok { background: var(--ok-soft); color: var(--ok); }
+.fb.bad { background: var(--bad-soft); color: var(--bad); }
+.fb.warn { background: var(--warn-soft); color: var(--warn); }
+.quiz.practice { border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; display: grid; gap: 12px; }
+.quiz .q { font-weight: 700; }
+.summary { border-radius: 10px; padding: 14px 18px; background: var(--code); border: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+.review-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.review-list b { display: inline-block; min-width: 6.5em; }
+details > summary { cursor: pointer; color: var(--accent); font-weight: 700; width: fit-content; }
+details[open] > summary { margin-bottom: 8px; }
+
+/* Pager */
+.pager { position: sticky; bottom: 0; background: var(--bg); border-top: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 12px calc(12px + env(safe-area-inset-bottom, 0px)); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.pager #pos { color: var(--muted); font-size: .9rem; font-variant-numeric: tabular-nums; }
+.reading-all .pager { display: none; }
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.bar-btn:focus-visible { outline-color: var(--bar-fg); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+@media (max-width: 859px) {
+  #menu { display: inline-block; }
+  .tb-right #remaining { display: none; }
+  .layout { grid-template-columns: minmax(0, 1fr); }
+  .steps { display: none; position: fixed; z-index: 4; top: calc(env(safe-area-inset-top, 0px) + 56px); left: 0; right: 0; bottom: 0; overflow-y: auto; border-right: 0; padding-left: max(8px, env(safe-area-inset-left, 0px)); padding-right: max(8px, env(safe-area-inset-right, 0px)); }
+  .steps.open { display: block; }
+  .steps-inner { position: static; }
+}
+@media print {
+  .topbar, .steps, .pager, body::before { display: none !important; }
+  .layout { display: block; }
+  .step[hidden] { display: grid !important; }
+}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+
+</head>
+<body>
+<header class="topbar">
+  <button class="bar-btn" id="menu" aria-controls="steps" aria-expanded="false">Steps</button>
+  <div class="tb-title"><small>Codelab</small><strong>Convert between bytes and KiB</strong></div>
+  <div class="tb-right">
+    <span id="remaining">10 min left</span>
+    <button class="bar-btn" id="readall" aria-pressed="false">Read all</button>
+  </div>
+</header>
+
+<div class="layout" id="layout">
+  <nav class="steps" id="steps" aria-label="Lesson steps">
+    <div class="steps-inner">
+      <ol>
+        <li><a href="#step-1" data-step="1"><span class="num"><span>1</span></span>Overview</a></li>
+        <li><a href="#step-2" data-step="2"><span class="num"><span>2</span></span>Bytes to KiB</a></li>
+        <li><a href="#step-3" data-step="3"><span class="num"><span>3</span></span>KiB to bytes</a></li>
+        <li><a href="#step-4" data-step="4"><span class="num"><span>4</span></span>Practice</a></li>
+        <li><a href="#step-5" data-step="5"><span class="num"><span>5</span></span>Review later</a></li>
+      </ol>
+      <div class="side-foot"><a href="#step-1">Quick reference</a></div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="content">
+
+      <section class="step" id="step-1" data-min="1">
+        <h1>1. Overview</h1>
+        <p class="dur">Duration: 1 min</p>
+        <dl class="meta">
+          <div><dt>You will learn</dt><dd>To convert whole numbers of bytes and KiB in either direction.</dd></div>
+          <div><dt>Before you start</dt><dd>You can multiply and divide whole numbers.</dd></div>
+          <div><dt>You need</dt><dd>Paper and a pen for notes. No calculator.</dd></div>
+        </dl>
+        <h2 id="quick-reference">Quick reference</h2>
+        <p class="paper">Come back here after practice to check your answers.</p>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Task</th><th>Rule</th><th>Why</th></tr></thead>
+            <tbody>
+              <tr><td><a href="#step-2">Bytes to KiB</a></td><td>Divide by 1,024</td><td>Each full group of 1,024 bytes counts as 1 KiB.</td></tr>
+              <tr><td><a href="#step-3">KiB to bytes</a></td><td>Multiply by 1,024</td><td>Each KiB contains 1,024 bytes.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="step" id="step-2" data-min="3">
+        <h1>2. Convert bytes to KiB</h1>
+        <p class="dur">Duration: 3 min</p>
+        <div class="callout try quiz" data-answer="b" data-reveal="s2-work">
+          <p class="tag">Try first</p>
+          <p class="q">A kibibyte (KiB) is a group of 1,024 bytes. How many KiB is 3,072 bytes?</p>
+          <fieldset class="choices"><legend class="sr">Choose one</legend>
+            <label><input type="radio" name="q-s2" value="a" data-fb="3.072 divides by 1,000. A KiB is 1,024 bytes, not 1,000.">3.072 KiB</label>
+            <label><input type="radio" name="q-s2" value="b" data-fb="Right. 3,072 bytes hold exactly three groups of 1,024.">3 KiB</label>
+            <label><input type="radio" name="q-s2" value="c" data-fb="3,145,728 multiplies by 1,024. Going from bytes to KiB makes the number smaller.">3,145,728 KiB</label>
+          </fieldset>
+          <button class="btn check">Lock in</button>
+          <p class="fb" aria-live="polite"></p>
+        </div>
+        <div id="s2-work" class="stack" hidden>
+          <p>To express 3,072 bytes in KiB, count the groups of 1,024.</p>
+          <ol class="work">
+            <li>Start with 3,072 bytes.</li>
+            <li>Divide by 1,024 bytes per KiB: <code>3,072 ÷ 1,024 = 3</code></li>
+            <li>Write the result as <strong>3 KiB</strong>.</li>
+          </ol>
+          <div class="callout note quiz" data-answer="b" data-reveal="s2-note">
+            <p class="tag">Worth writing down</p>
+            <p class="paper">On paper, write the rule in your own words. Then check the key part:</p>
+            <p class="q">Divide bytes by ___ to get KiB.</p>
+            <fieldset class="choices"><legend class="sr">Choose one</legend>
+              <label><input type="radio" name="q-s2n" value="a" data-fb="1,000 gives kilobytes (kB), a different unit.">1,000</label>
+              <label><input type="radio" name="q-s2n" value="b" data-fb="Right.">1,024</label>
+              <label><input type="radio" name="q-s2n" value="c" data-fb="8 converts bytes to bits, not to KiB.">8</label>
+            </fieldset>
+            <button class="btn ghost check">Check</button>
+            <p class="fb" aria-live="polite"></p>
+            <p id="s2-note" hidden><strong>Compare with your note:</strong> Divide bytes by 1,024 to count how many KiB they represent.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="step" id="step-3" data-min="2">
+        <h1>3. Convert KiB to bytes</h1>
+        <p class="dur">Duration: 2 min</p>
+        <div class="callout try quiz" data-answer="b">
+          <p class="tag">Recall</p>
+          <p class="q">Without looking back: how many bytes are in 1 KiB?</p>
+          <fieldset class="choices"><legend class="sr">Choose one</legend>
+            <label><input type="radio" name="q-s3" value="a" data-fb="1,000 bytes is 1 kB. KiB uses powers of two.">1,000</label>
+            <label><input type="radio" name="q-s3" value="b" data-fb="Right.">1,024</label>
+            <label><input type="radio" name="q-s3" value="c" data-fb="1,048,576 bytes is 1 MiB, which is 1,024 KiB.">1,048,576</label>
+          </fieldset>
+          <button class="btn check">Check</button>
+          <p class="fb" aria-live="polite"></p>
+        </div>
+        <p>To convert 2 KiB to bytes, count the bytes in two groups of 1,024. <code>2 × 1,024 = 2,048</code>, so <strong>2 KiB = 2,048 bytes</strong>.</p>
+        <div class="callout note quiz" data-answer="a" data-reveal="s3-note">
+          <p class="tag">Worth writing down</p>
+          <p class="paper">On paper, write the rule in your own words. Then check the key part:</p>
+          <p class="q">To get bytes from KiB, ___ by 1,024.</p>
+          <fieldset class="choices"><legend class="sr">Choose one</legend>
+            <label><input type="radio" name="q-s3n" value="a" data-fb="Right. Each KiB adds 1,024 bytes.">multiply</label>
+            <label><input type="radio" name="q-s3n" value="b" data-fb="Dividing goes the other way, from bytes to KiB.">divide</label>
+          </fieldset>
+          <button class="btn ghost check">Check</button>
+          <p class="fb" aria-live="polite"></p>
+          <p id="s3-note" hidden><strong>Compare with your note:</strong> Multiply KiB by 1,024 to find the total number of bytes.</p>
+        </div>
+      </section>
+
+      <section class="step" id="step-4" data-min="3">
+        <h1>4. Practice</h1>
+        <p class="dur">Duration: 3 min</p>
+        <p>Answer from memory. Pick how sure you are, then check. Use the <a href="#step-1">quick reference</a> only after you check.</p>
+
+        <div class="quiz practice" data-kind="num" data-answer="5">
+          <p class="q">1. How many KiB are in 5,120 bytes?</p>
+          <div class="num-row"><label class="sr" for="p1">Answer</label><input type="text" id="p1" inputmode="numeric" autocomplete="off"><span class="unit">KiB</span></div>
+          <fieldset class="conf"><legend>I am</legend><label><input type="radio" name="c1" value="sure">sure</label><label><input type="radio" name="c1" value="unsure">unsure</label></fieldset>
+          <button class="btn check">Check</button>
+          <p class="fb" aria-live="polite"></p>
+          <p class="explain" hidden><strong>5 KiB.</strong> Divide <code>5,120 ÷ 1,024</code> to count the groups. Check by multiplying <code>5 × 1,024</code>.</p>
+        </div>
+
+        <div class="quiz practice" data-kind="num" data-answer="7168">
+          <p class="q">2. How many bytes are in 7 KiB?</p>
+          <div class="num-row"><label class="sr" for="p2">Answer</label><input type="text" id="p2" inputmode="numeric" autocomplete="off"><span class="unit">bytes</span></div>
+          <fieldset class="conf"><legend>I am</legend><label><input type="radio" name="c2" value="sure">sure</label><label><input type="radio" name="c2" value="unsure">unsure</label></fieldset>
+          <button class="btn check">Check</button>
+          <p class="fb" aria-live="polite"></p>
+          <p class="explain" hidden><strong>7,168 bytes.</strong> Multiply <code>7 × 1,024</code>. Dividing would count groups when you already know there are seven.</p>
+        </div>
+
+        <div class="quiz practice" data-answer="b">
+          <p class="q">3. A file is 9,216 bytes. Which calculation gives its size in KiB?</p>
+          <fieldset class="choices"><legend class="sr">Choose one</legend>
+            <label><input type="radio" name="p3" value="a" data-fb="Multiplying makes the number bigger, but KiB are bigger units, so the count must get smaller.">9,216 × 1,024</label>
+            <label><input type="radio" name="p3" value="b" data-fb="Right. 9,216 ÷ 1,024 = 9 KiB.">9,216 ÷ 1,024</label>
+            <label><input type="radio" name="p3" value="c" data-fb="Dividing by 1,000 gives kB, not KiB.">9,216 ÷ 1,000</label>
+          </fieldset>
+          <fieldset class="conf"><legend>I am</legend><label><input type="radio" name="c3" value="sure">sure</label><label><input type="radio" name="c3" value="unsure">unsure</label></fieldset>
+          <button class="btn check">Check</button>
+          <p class="fb" aria-live="polite"></p>
+        </div>
+
+        <p class="summary" id="summary" hidden></p>
+      </section>
+
+      <section class="step" id="step-5" data-min="1">
+        <h1>5. Review later</h1>
+        <p class="dur">Duration: 1 min now, 2 min later</p>
+        <p>Answer these on paper without looking back at the lesson.</p>
+        <ul class="review-list">
+          <li><b>Tomorrow</b> How many bytes are in 4 KiB?</li>
+          <li><b>Next week</b> A file is 10,240 bytes. How many KiB is it, and which operation did you use?</li>
+          <li><b>Reflect</b> Which conversion did you hesitate on, and what will you check first next time?</li>
+        </ul>
+        <details><summary>Review answers</summary><p>4,096 bytes (<code>4 × 1,024</code>). 10 KiB (<code>10,240 ÷ 1,024</code>), because you start in bytes and count groups.</p></details>
+      </section>
+
+    </div>
+    <nav class="pager" aria-label="Step navigation">
+      <button class="btn ghost" id="back">Back</button>
+      <span id="pos">Step 1 of 5</span>
+      <button class="btn" id="next">Next</button>
+    </nav>
+  </main>
+</div>
+
+<script>
+(function () {
+  var steps = Array.prototype.slice.call(document.querySelectorAll(".step"));
+  var links = Array.prototype.slice.call(document.querySelectorAll(".steps a[data-step]"));
+  var layout = document.getElementById("layout");
+  var navEl = document.getElementById("steps");
+  var menu = document.getElementById("menu");
+  var readBtn = document.getElementById("readall");
+  var KEY = "codelab:bytes-and-kib"; // STORAGE_KEY: one per lesson
+  var state = { step: 1, readAll: false, done: [] };
+  try { var saved = JSON.parse(localStorage.getItem(KEY) || "null"); if (saved) state = Object.assign(state, saved); } catch (e) {}
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+
+  function minutesLeft(n) {
+    return steps.slice(n - 1).reduce(function (t, s) { return t + Number(s.getAttribute("data-min")); }, 0);
+  }
+
+  function render() {
+    var n = state.step;
+    layout.classList.toggle("reading-all", state.readAll);
+    readBtn.setAttribute("aria-pressed", String(state.readAll));
+    steps.forEach(function (s, i) { s.hidden = !state.readAll && i + 1 !== n; });
+    links.forEach(function (a) {
+      var k = Number(a.getAttribute("data-step"));
+      if (k === n) a.setAttribute("aria-current", "step"); else a.removeAttribute("aria-current");
+      a.classList.toggle("done", state.done.indexOf(k) !== -1 && k !== n);
+    });
+    document.getElementById("pos").textContent = "Step " + n + " of " + steps.length;
+    document.getElementById("back").disabled = n === 1;
+    document.getElementById("next").textContent = n === steps.length ? "Done" : "Next";
+    document.getElementById("remaining").textContent = minutesLeft(n) + " min left";
+  }
+
+  function go(n, scroll) {
+    n = Math.max(1, Math.min(steps.length, n));
+    if (n > state.step && state.done.indexOf(state.step) === -1) state.done.push(state.step);
+    state.step = n; save(); render();
+    if (location.hash !== "#step-" + n) history.replaceState(null, "", "#step-" + n);
+    if (state.readAll) document.getElementById("step-" + n).scrollIntoView();
+    else if (scroll !== false) window.scrollTo(0, 0);
+    navEl.classList.remove("open"); menu.setAttribute("aria-expanded", "false");
+  }
+
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest('a[href^="#step-"]');
+    if (!a) return;
+    e.preventDefault();
+    go(Number(a.getAttribute("href").replace("#step-", "")));
+  });
+  document.getElementById("back").addEventListener("click", function () { go(state.step - 1); });
+  document.getElementById("next").addEventListener("click", function () {
+    if (state.step === steps.length) { if (state.done.indexOf(state.step) === -1) state.done.push(state.step); save(); render(); return; }
+    go(state.step + 1);
+  });
+  readBtn.addEventListener("click", function () { state.readAll = !state.readAll; save(); render(); });
+  menu.addEventListener("click", function () {
+    var open = navEl.classList.toggle("open");
+    menu.setAttribute("aria-expanded", String(open));
+  });
+  window.addEventListener("hashchange", function () {
+    var m = location.hash.match(/^#step-(\d+)$/); if (m) go(Number(m[1]));
+  });
+  var m0 = location.hash.match(/^#step-(\d+)$/);
+  if (m0) state.step = Math.max(1, Math.min(steps.length, Number(m0[1])));
+  render();
+
+  // Quizzes: every answer is checked by the page.
+  var practiceTotal = document.querySelectorAll(".quiz.practice").length;
+  var results = {};
+  document.querySelectorAll(".quiz").forEach(function (quiz, qi) {
+    var btn = quiz.querySelector(".check");
+    var fb = quiz.querySelector(".fb");
+    btn.addEventListener("click", function () {
+      var conf = quiz.querySelector(".conf input:checked");
+      var right, msg;
+      if (quiz.getAttribute("data-kind") === "num") {
+        var input = quiz.querySelector('input[type="text"]');
+        var raw = input.value.replace(/[,\s]/g, "");
+        if (!/^\d+$/.test(raw)) { fb.className = "fb warn"; fb.textContent = "Enter a whole number first."; return; }
+        right = Number(raw) === Number(quiz.getAttribute("data-answer"));
+        msg = right ? "Right." : "Not quite.";
+        input.readOnly = true;
+      } else {
+        var picked = quiz.querySelector(".choices input:checked");
+        if (!picked) { fb.className = "fb warn"; fb.textContent = "Pick an answer first."; return; }
+        right = picked.value === quiz.getAttribute("data-answer");
+        msg = picked.getAttribute("data-fb");
+        quiz.querySelectorAll(".choices input").forEach(function (r) {
+          r.disabled = true;
+          if (r.value === quiz.getAttribute("data-answer")) r.parentNode.classList.add("right");
+          else if (r === picked) r.parentNode.classList.add("wrong");
+        });
+      }
+      if (quiz.classList.contains("practice")) {
+        if (!right && conf && conf.value === "sure") msg += " You were sure, so review this rule first.";
+        if (right && conf && conf.value === "unsure") msg += " You knew more than you thought.";
+        quiz.querySelectorAll(".conf input").forEach(function (r) { r.disabled = true; });
+        results[qi] = { right: right, sureWrong: !right && conf && conf.value === "sure" };
+      }
+      fb.className = "fb " + (right ? "ok" : "bad");
+      fb.textContent = msg;
+      btn.disabled = true;
+      var ex = quiz.querySelector(".explain"); if (ex) ex.hidden = false;
+      var rv = quiz.getAttribute("data-reveal"); if (rv) document.getElementById(rv).hidden = false;
+      var keys = Object.keys(results);
+      if (keys.length === practiceTotal) {
+        var ok = keys.filter(function (k) { return results[k].right; }).length;
+        var sw = keys.filter(function (k) { return results[k].sureWrong; }).length;
+        var s = document.getElementById("summary");
+        s.hidden = false;
+        s.textContent = ok + " of " + practiceTotal + " correct." + (sw ? " " + sw + " confident and wrong: start your review there." : " No confident mistakes.");
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
