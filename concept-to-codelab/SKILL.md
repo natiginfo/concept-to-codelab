@@ -11,8 +11,25 @@ license: MIT
 - Read the available source material and project instructions. Reuse relevant notes with page or section references and consult the original where a claim or requirement needs checking. Identify what the learner should be able to explain, calculate, decide, or do by the end.
 - Convert each PDF, slide deck, or document to a page-referenced Markdown extract once, and reuse it in later sessions and projects. Check the user's source cache before reading the original. Follow [references/source-cache.md](references/source-cache.md) for the location, format, and privacy rules.
 - Teach the prerequisites needed to meet that outcome. Explain each new idea in plain language, name it, and show why it matters. Work through one concrete example with intermediate steps before asking learners to apply the idea to a fresh case.
-- Match the requested audience, duration, and format. When the request leaves them open, assume learners who are new to the topic but know its prerequisites, a roughly 20-minute route, and Markdown. Ask only when the source material leaves the learning outcome unclear. If a shorter route would help, name the steps that still cover the objective and include a practice check. Reuse existing lesson structure and publishing tools where practical.
+- Set the learner level. When the request, project, or source material does not show it, ask once with the agent's structured question tool, or as a plain question when no such tool is available. Offer three levels:
+  - **New:** knows the prerequisites but not the topic. Define every term, show more intermediate steps, and give more feedback.
+  - **Familiar:** has used the topic and wants to go deeper. Recap briefly, then focus on the new idea and contrast it with what the learner already knows.
+  - **Expert:** wants a refresher or edge cases. Skip the basics, cover trade-offs and failure cases, and make practice harder and more mixed.
+
+  If no one can answer, assume New.
+- Match the requested duration and format. When the request leaves them open, assume a roughly 20-minute route and Markdown. Ask about anything else only when the source material leaves the learning outcome unclear, and put all questions in one round. If a shorter route would help, name the steps that still cover the objective and include a practice check. Reuse existing lesson structure and publishing tools where practical.
 - When the project has no lesson structure, use this order: a header with time, goal, and prerequisites; the quick reference; one section per teaching step, titled by the task it teaches; practice; answers and feedback; review later.
+- For HTML output in a project without its own lesson styling or navigation, start from [assets/lesson-template.html](assets/lesson-template.html). Replace the sample lesson, keep its checked-answer patterns, and give each lesson its own storage key.
+
+## Write for learners
+
+Follow the project's style guide when it has one. Otherwise:
+
+- Use one term for each concept throughout the lesson, including the quick reference and feedback. Do not switch between synonyms or abbreviations.
+- Define each term and acronym at first use.
+- Address the learner as "you". Use the present tense and active voice. Keep most sentences under 20 words.
+- Give one action per numbered step, then state the result the learner should see.
+- Do not call a step simple, easy, or obvious, and do not write "just" or "simply". A learner who is stuck reads these words as blame.
 
 ## Make it stick
 

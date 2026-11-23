@@ -2,7 +2,7 @@
 
 Turn lecture notes, workshop material, or a technical concept into a self-paced codelab. Give learners a worked example, a quick reference, short notes worth writing down, and a fresh exercise with explanatory feedback. Lessons build in retrieval practice, interleaving, and spaced review, based on research summarized in *Make It Stick*.
 
-[See a sample lesson](examples/bytes-and-kib.md) · [Read the skill](concept-to-codelab/SKILL.md)
+[See a sample lesson](examples/bytes-and-kib.md) · [See the HTML template](concept-to-codelab/assets/lesson-template.html) · [Read the skill](concept-to-codelab/SKILL.md)
 
 ## Install
 
@@ -34,7 +34,7 @@ Clone or download this repository. From the root of that checkout, set `target_r
 target_repo='/path/to/your/project'
 destination="$target_repo/.agents/skills/concept-to-codelab"
 if mkdir -p "$(dirname "$destination")" && mkdir "$destination"; then
-  cp -R concept-to-codelab/SKILL.md concept-to-codelab/LICENSE concept-to-codelab/references "$destination/"
+  cp -R concept-to-codelab/SKILL.md concept-to-codelab/LICENSE concept-to-codelab/references concept-to-codelab/assets "$destination/"
 fi
 ```
 
@@ -60,6 +60,8 @@ In a fresh session with the skill installed, try these prompts without naming th
 | --- | --- |
 | Create a 10-minute Markdown codelab on converting bytes to KiB using 1 KiB = 1,024 bytes. | The skill applies. The conversion and feedback are correct, and the practice uses fresh numbers. Practice asks for answers from memory before lookup, mixes conversion directions, and ends with review questions for later. |
 | Write a guided local Python lab where beginners implement a Celsius-to-Fahrenheit converter. Include sample inputs and expected outputs. | The skill applies. The instructions are runnable, expected outputs are correct, and the learner writes the implementation. |
+| Make the bytes-to-KiB codelab an interactive HTML page. | The skill applies. The page starts from the lesson template, shows one step at a time with Back and Next, and checks every answer without free-text boxes. |
+| Create a codelab on cancelling Kotlin coroutines. | The skill asks for the learner level once, with New, Familiar, and Expert options, then matches the depth to the answer. |
 | Convert 3,072 bytes to KiB and give me one sentence. | The prompt calls for a direct answer and no skill activation. |
 
 For a bug or improvement, include the prompt you tried, what you expected, and a sample output you can share publicly.
