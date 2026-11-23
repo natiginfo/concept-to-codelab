@@ -1,7 +1,7 @@
 {
   "name": "concept-to-codelab",
   "displayName": "Concept to Codelab",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Turn technical concepts and course materials into self-paced codelabs with worked examples and practice.",
   "author": { "name": "Natig Babayev" },
   "homepage": "https://github.com/natiginfo/concept-to-codelab#readme",
