@@ -61,6 +61,7 @@ In a fresh session with the skill installed, try these prompts without naming th
 | Create a 10-minute Markdown codelab on converting bytes to KiB using 1 KiB = 1,024 bytes. | The skill applies. The conversion and feedback are correct, and the practice uses fresh numbers. Practice asks for answers from memory before lookup, mixes conversion directions, and ends with review questions for later. |
 | Write a guided local Python lab where beginners implement a Celsius-to-Fahrenheit converter. Include sample inputs and expected outputs. | The skill applies. The instructions are runnable, expected outputs are correct, and the learner writes the implementation. |
 | Make the bytes-to-KiB codelab an interactive HTML page. | The skill applies. The page starts from the lesson template, shows one step at a time with Back and Next, and checks every answer without free-text boxes. |
+| Create a codelab on cancelling Kotlin coroutines. | The skill asks for the learner level once, with New, Familiar, and Expert options, then matches the depth to the answer. |
 | Convert 3,072 bytes to KiB and give me one sentence. | The prompt calls for a direct answer and no skill activation. |
 
 For a bug or improvement, include the prompt you tried, what you expected, and a sample output you can share publicly.
