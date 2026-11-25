@@ -10,6 +10,16 @@ Use this guide with the "Find and use teaching visuals" section of the skill.
 - When reuse is unclear, link to the specific figure and create an accurate illustration in the lesson.
 - If search is unavailable or no suitable source turns up, create an original visual and report the sourcing limit in the handoff.
 
+## Draw original diagrams
+
+- Use Mermaid for flows, sequences, state machines, class or module structure, and timelines. The template renders it. Wrap each diagram in `<figure class="diagram"><pre class="mermaid">…</pre><figcaption>…</figcaption></figure>`.
+- Draw the mechanism, not the name. Show the path that a request or value takes, not one box labeled with the concept.
+- Give every arrow a verb, such as `publishes`, `hashes`, or `blocks`.
+- Add `accTitle` and `accDescr` lines to each diagram. They are its alt text.
+- Keep one idea per diagram and about 12 nodes or fewer, so labels stay legible at phone width. Split a larger diagram.
+- Use inline SVG for spatial or geometric ideas that Mermaid cannot draw, such as a kernel that moves across a grid.
+- Mermaid loads from a CDN, pinned to an exact version with Subresource Integrity. To upgrade, change the version and the hash in the template together. Without a network connection, the page shows the diagram source instead.
+
 ## Present the visual
 
 - Show the visual at the first explanation of the term, not in an appendix.
@@ -24,9 +34,10 @@ Use this guide with the "Find and use teaching visuals" section of the skill.
 
 - Open the lesson in a browser or preview.
 - Confirm that every new image loads.
+- Confirm that every Mermaid diagram renders as a diagram, not as source text or a syntax error. Check it in its own step and in Read all mode.
 - Confirm that each source link reaches the cited figure, not only the page.
 - Check that labels are legible at phone width (about 375 px).
-- For web output, check the print layout of the quick reference when the environment supports it.
+- Check the print layout of the quick reference when the environment supports it.
 
 ## Report in the handoff
 

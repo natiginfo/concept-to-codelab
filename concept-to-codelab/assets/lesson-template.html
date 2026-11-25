@@ -13,6 +13,8 @@
     Number: <div class="quiz practice" data-kind="num" data-answer="7168"> with a text input.
   - data-reveal="id" shows the element with that id after the learner checks.
   - Own-words notes and reflection go on paper, with a model answer to reveal.
+  - Diagram: <figure class="diagram"><pre class="mermaid">Mermaid source</pre><figcaption>…</figcaption></figure>.
+    It renders when its step or reveal becomes visible. Add accTitle and accDescr lines as alt text.
   - Change STORAGE_KEY below so saved progress is per lesson.
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -48,6 +50,10 @@
 [hidden] { display: none !important; }
 body { background: var(--bg); color: var(--fg); font: 16px/1.6 var(--font); }
 .stack { display: grid; gap: 16px; }
+figure.diagram { margin: 0; display: grid; gap: 8px; }
+figure.diagram pre.mermaid { margin: 0; padding: 12px; background: var(--code); border: 1px solid var(--line); border-radius: 8px; overflow-x: auto; text-align: center; font-family: var(--mono); font-size: .85em; }
+figure.diagram pre.mermaid svg { max-width: 100%; height: auto; }
+figure.diagram figcaption { color: var(--muted); font-size: .9em; }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bar); }
 
 /* Top bar */
@@ -228,6 +234,16 @@ details[open] > summary { margin-bottom: 8px; }
             <li>Divide by 1,024 bytes per KiB: <code>3,072 ÷ 1,024 = 3</code></li>
             <li>Write the result as <strong>3 KiB</strong>.</li>
           </ol>
+          <figure class="diagram">
+            <pre class="mermaid">
+flowchart LR
+  accTitle: Converting between bytes and KiB
+  accDescr: Divide by 1,024 to go from bytes to KiB. Multiply by 1,024 to go back.
+  B["bytes"] -- "divide by 1,024" --> K["KiB"]
+  K -- "multiply by 1,024" --> B
+            </pre>
+            <figcaption>Follow the arrow from bytes to KiB: you divide, so the number gets smaller.</figcaption>
+          </figure>
           <div class="callout note quiz" data-answer="b" data-reveal="s2-note">
             <p class="tag">Worth writing down</p>
             <p class="paper">On paper, write the rule in your own words. Then check the key part:</p>
@@ -363,7 +379,11 @@ details[open] > summary { margin-bottom: 8px; }
     document.getElementById("back").disabled = n === 1;
     document.getElementById("next").textContent = n === steps.length ? "Done" : "Next";
     document.getElementById("remaining").textContent = minutesLeft(n) + " min left";
+    diagrams();
   }
+
+  // Mermaid cannot measure text in hidden elements, so diagrams render when they become visible.
+  function diagrams() { if (window.codelabDiagrams) window.codelabDiagrams(); }
 
   function go(n, scroll) {
     n = Math.max(1, Math.min(steps.length, n));
@@ -436,6 +456,7 @@ details[open] > summary { margin-bottom: 8px; }
       btn.disabled = true;
       var ex = quiz.querySelector(".explain"); if (ex) ex.hidden = false;
       var rv = quiz.getAttribute("data-reveal"); if (rv) document.getElementById(rv).hidden = false;
+      diagrams();
       var keys = Object.keys(results);
       if (keys.length === practiceTotal) {
         var ok = keys.filter(function (k) { return results[k].right; }).length;
@@ -446,6 +467,29 @@ details[open] > summary { margin-bottom: 8px; }
       }
     });
   });
+})();
+</script>
+<script>
+// Mermaid, pinned to an exact version with Subresource Integrity: the browser refuses changed bytes.
+// To upgrade, change the version and the hash together. Offline, each diagram shows its source text.
+(function () {
+  var s = document.createElement("script");
+  s.src = "https://cdn.jsdelivr.net/npm/mermaid@11.17.2/dist/mermaid.min.js";
+  s.integrity = "sha384-EOXBFmc3gx5mb+vn0vPvvGqACToJD24hhacX5Yx+8NUUQrHIle/Qi5Bg9o3zKwW2";
+  s.crossOrigin = "anonymous";
+  s.onload = function () {
+    var root = document.documentElement;
+    var dark = root.dataset.theme === "dark" || (root.dataset.theme !== "light" && matchMedia("(prefers-color-scheme: dark)").matches);
+    mermaid.initialize({ startOnLoad: false, theme: dark ? "dark" : "default", securityLevel: "strict" });
+    document.fonts.ready.then(function () {
+      window.codelabDiagrams = function () {
+        var nodes = Array.prototype.filter.call(document.querySelectorAll("pre.mermaid:not([data-processed])"), function (n) { return n.getClientRects().length > 0; });
+        if (nodes.length) mermaid.run({ nodes: nodes, suppressErrors: true });
+      };
+      window.codelabDiagrams();
+    });
+  };
+  document.head.appendChild(s);
 })();
 </script>
 </body>
