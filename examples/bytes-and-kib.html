@@ -184,6 +184,35 @@ body { font-size: 17px; line-height: 1.65; -webkit-font-smoothing: antialiased; 
 .summary, figure.diagram pre.mermaid { border-radius: 12px; }
 .pager { background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: blur(8px); }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* Predict: a guess before the explanation, lighter than a graded check. */
+.callout.predict { background: transparent; border: 1.5px dashed color-mix(in srgb, var(--accent) 45%, var(--line)); box-shadow: none; }
+/* Drag quizzes: chips snap into an order or into slots. Tap or Enter also works; arrow keys reorder. */
+.chip { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 8px 14px; font: inherit; color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; position: relative; }
+.chip:hover { border-color: var(--muted); }
+.chip.dragging { cursor: grabbing; z-index: 3; border-color: var(--accent); box-shadow: 0 10px 28px rgb(0 0 0 / .18); }
+.chip[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.chip:disabled, [data-locked] .chip { cursor: default; box-shadow: none; }
+ol.order { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; counter-reset: ord; }
+ol.order .chip { display: flex; width: 100%; counter-increment: ord; }
+ol.order .chip::before { content: counter(ord); flex: none; display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--code); color: var(--muted); font-size: .8rem; font-weight: 700; }
+ol.order .chip::after { content: "⋮⋮"; margin-left: auto; color: var(--muted); letter-spacing: -2px; }
+.chip.right { border-color: var(--ok); background: var(--ok-soft); }
+.chip.wrong { border-color: var(--bad); background: var(--bad-soft); }
+ol.order .chip.right::after { content: "✓"; color: var(--ok); letter-spacing: 0; }
+ol.order .chip.wrong::after { content: "✕"; color: var(--bad); letter-spacing: 0; }
+.slot-line { line-height: 3; }
+.slot { display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; min-width: 6em; min-height: 48px; padding: 2px; margin: 0 4px; border: 1.5px dashed var(--muted); border-radius: 12px; transition: border-color .15s, background .15s; cursor: pointer; }
+.slot .chip { box-shadow: none; }
+.slot.near { border-color: var(--accent); border-style: solid; background: var(--accent-soft); }
+.slot.right { border: 1.5px solid var(--ok); background: var(--ok-soft); }
+.slot.wrong { border: 1.5px solid var(--bad); background: var(--bad-soft); }
+.bank { display: flex; flex-wrap: wrap; gap: 8px; min-height: 64px; padding: 8px; border: 1px dashed var(--line); border-radius: 12px; }
+  .hints { margin: .25rem 0 .75rem; padding-left: 1.4rem; color: var(--muted); }
+  .hints li { margin: .2rem 0; }
+  .hints li::marker { color: var(--accent); font-weight: 600; }
+  .hints:not(:has(li:not([hidden]))) { display: none; }
+  .actions { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
 </style>
 
 </head>
@@ -215,7 +244,6 @@ body { font-size: 17px; line-height: 1.65; -webkit-font-smoothing: antialiased; 
 
   <main>
     <div class="content">
-
       <section class="step" id="step-1" data-min="1">
         <h1>1. Overview</h1>
         <p class="dur">Duration: 1 min</p>
@@ -240,15 +268,16 @@ body { font-size: 17px; line-height: 1.65; -webkit-font-smoothing: antialiased; 
       <section class="step" id="step-2" data-min="3">
         <h1>2. Convert bytes to KiB</h1>
         <p class="dur">Duration: 3 min</p>
-        <div class="callout try quiz" data-answer="b" data-reveal="s2-work">
-          <p class="tag">Try first</p>
-          <p class="q">A kibibyte (KiB) is a group of 1,024 bytes. How many KiB is 3,072 bytes?</p>
+        <p>Computers count memory in powers of two. A kibibyte (KiB) is a group of 1,024 bytes.</p>
+        <div class="callout try predict quiz" data-answer="b" data-reveal="s2-work">
+          <p class="tag">Predict · a guess is fine</p>
+          <p class="q">How many KiB is 3,072 bytes?</p>
           <fieldset class="choices"><legend class="sr">Choose one</legend>
             <label><input type="radio" name="q-s2" value="a" data-fb="3.072 divides by 1,000. A KiB is 1,024 bytes, not 1,000.">3.072 KiB</label>
             <label><input type="radio" name="q-s2" value="b" data-fb="Right. 3,072 bytes hold exactly three groups of 1,024.">3 KiB</label>
             <label><input type="radio" name="q-s2" value="c" data-fb="3,145,728 multiplies by 1,024. Going from bytes to KiB makes the number smaller.">3,145,728 KiB</label>
           </fieldset>
-          <button class="btn check">Lock in</button>
+          <button class="btn check">Lock in my guess</button>
           <p class="fb" aria-live="polite"></p>
         </div>
         <div id="s2-work" class="stack" hidden>
@@ -287,7 +316,7 @@ flowchart LR
       <section class="step" id="step-3" data-min="2">
         <h1>3. Convert KiB to bytes</h1>
         <p class="dur">Duration: 2 min</p>
-        <div class="callout try quiz" data-answer="b">
+        <div class="callout try quiz" data-answer="b" data-hint="KiB counts in powers of two: 2 to the 10th.">
           <p class="tag">Recall</p>
           <p class="q">Without looking back: how many bytes are in 1 KiB?</p>
           <fieldset class="choices"><legend class="sr">Choose one</legend>
@@ -313,13 +342,18 @@ flowchart LR
         </div>
       </section>
 
-      <section class="step" id="step-4" data-min="3">
+      <section class="step" id="step-4" data-min="5">
         <h1>4. Practice</h1>
-        <p class="dur">Duration: 3 min</p>
+        <p class="dur">Duration: 5 min</p>
         <p>Answer from memory. Pick how sure you are, then check. Use the <a href="#step-1">quick reference</a> only after you check.</p>
 
         <div class="quiz practice" data-kind="num" data-answer="5">
           <p class="q">1. How many KiB are in 5,120 bytes?</p>
+          <ol class="hints">
+            <li hidden>KiB counts in powers of two, not tens.</li>
+            <li hidden>One KiB is 1,024 bytes, so divide.</li>
+            <li hidden>5,120 ÷ 1,024 = ?</li>
+          </ol>
           <div class="num-row"><label class="sr" for="p1">Answer</label><input type="text" id="p1" inputmode="numeric" autocomplete="off"><span class="unit">KiB</span></div>
           <fieldset class="conf"><legend>I am</legend><label><input type="radio" name="c1" value="sure">sure</label><label><input type="radio" name="c1" value="unsure">unsure</label></fieldset>
           <button class="btn check">Check</button>
@@ -329,6 +363,11 @@ flowchart LR
 
         <div class="quiz practice" data-kind="num" data-answer="7168">
           <p class="q">2. How many bytes are in 7 KiB?</p>
+          <ol class="hints">
+            <li hidden>KiB to bytes makes the number bigger.</li>
+            <li hidden>Multiply by 1,024.</li>
+            <li hidden>7 × 1,024 = ?</li>
+          </ol>
           <div class="num-row"><label class="sr" for="p2">Answer</label><input type="text" id="p2" inputmode="numeric" autocomplete="off"><span class="unit">bytes</span></div>
           <fieldset class="conf"><legend>I am</legend><label><input type="radio" name="c2" value="sure">sure</label><label><input type="radio" name="c2" value="unsure">unsure</label></fieldset>
           <button class="btn check">Check</button>
@@ -338,6 +377,10 @@ flowchart LR
 
         <div class="quiz practice" data-answer="b">
           <p class="q">3. A file is 9,216 bytes. Which calculation gives its size in KiB?</p>
+          <ol class="hints">
+            <li hidden>Bytes to KiB makes the number smaller.</li>
+            <li hidden>A KiB is 1,024 bytes, not 1,000.</li>
+          </ol>
           <fieldset class="choices"><legend class="sr">Choose one</legend>
             <label><input type="radio" name="p3" value="a" data-fb="Multiplying makes the number bigger, but KiB are bigger units, so the count must get smaller.">9,216 × 1,024</label>
             <label><input type="radio" name="p3" value="b" data-fb="Right. 9,216 ÷ 1,024 = 9 KiB.">9,216 ÷ 1,024</label>
@@ -346,6 +389,44 @@ flowchart LR
           <fieldset class="conf"><legend>I am</legend><label><input type="radio" name="c3" value="sure">sure</label><label><input type="radio" name="c3" value="unsure">unsure</label></fieldset>
           <button class="btn check">Check</button>
           <p class="fb" aria-live="polite"></p>
+        </div>
+
+        <div class="quiz practice" data-kind="slots">
+          <p class="q">4. Drag a chip into each slot to convert 3,072 bytes to KiB.</p>
+          <ol class="hints">
+            <li hidden>Bytes to KiB makes the number smaller, so pick the operation that shrinks it.</li>
+            <li hidden>Divide by 1,024, not 1,000.</li>
+          </ol>
+          <p class="slot-line"><code>3,072</code><span class="slot" role="button" tabindex="0" aria-label="Operation slot" data-answer="div"></span><code>1,024</code> =<span class="slot" role="button" tabindex="0" aria-label="Result slot" data-answer="3"></span>KiB</p>
+          <div class="bank" aria-label="Chips. Pick a chip, then pick a slot.">
+            <button type="button" class="chip" data-id="mul">×</button>
+            <button type="button" class="chip" data-id="3">3</button>
+            <button type="button" class="chip" data-id="div">÷</button>
+            <button type="button" class="chip" data-id="3.072">3.072</button>
+          </div>
+          <fieldset class="conf"><legend>I am</legend><label><input type="radio" name="c4" value="sure">sure</label><label><input type="radio" name="c4" value="unsure">unsure</label></fieldset>
+          <button class="btn check">Check</button>
+          <p class="fb" aria-live="polite"></p>
+          <p class="explain" hidden><strong>3,072 ÷ 1,024 = 3 KiB.</strong> 3.072 comes from dividing by 1,000, which gives kB.</p>
+        </div>
+
+        <div class="quiz practice" data-kind="order" data-answer="kb,kib,1000kib,mib">
+          <p class="q">5. Drag the sizes into order, smallest first. With a keyboard, focus a size and use the arrow keys.</p>
+          <ol class="hints">
+            <li hidden>Turn each size into bytes, then compare.</li>
+            <li hidden>1 kB is 1,000 bytes. 1 KiB is 1,024 bytes.</li>
+            <li hidden>1 MiB is 1,024 KiB.</li>
+          </ol>
+          <ol class="order">
+            <li class="chip" tabindex="0" data-id="1000kib">1,000 KiB</li>
+            <li class="chip" tabindex="0" data-id="kb">1 kB (1,000 bytes)</li>
+            <li class="chip" tabindex="0" data-id="mib">1 MiB</li>
+            <li class="chip" tabindex="0" data-id="kib">1 KiB</li>
+          </ol>
+          <fieldset class="conf"><legend>I am</legend><label><input type="radio" name="c5" value="sure">sure</label><label><input type="radio" name="c5" value="unsure">unsure</label></fieldset>
+          <button class="btn check">Check</button>
+          <p class="fb" aria-live="polite"></p>
+          <p class="explain" hidden><strong>1 kB, 1 KiB, 1,000 KiB, 1 MiB.</strong> In bytes: 1,000, 1,024, 1,024,000 and 1,048,576. 1 MiB is 1,024 KiB, so it beats 1,000 KiB.</p>
         </div>
 
         <p class="summary" id="summary" hidden></p>
@@ -362,7 +443,6 @@ flowchart LR
         </ul>
         <details><summary>Review answers</summary><p>4,096 bytes (<code>4 × 1,024</code>). 10 KiB (<code>10,240 ÷ 1,024</code>), because you start in bytes and count groups.</p></details>
       </section>
-
     </div>
     <nav class="pager" aria-label="Step navigation">
       <button class="btn ghost" id="back">Back</button>
@@ -443,38 +523,247 @@ flowchart LR
   render();
 
   // Quizzes: every answer is checked by the page.
+  // A predict quiz (class "predict") takes one guess, then shows the answer and the explanation.
+  // Other quizzes allow data-tries attempts (default 2). A wrong attempt shows the misconception and data-hint, not the answer.
   var practiceTotal = document.querySelectorAll(".quiz.practice").length;
   var results = {};
+  var still = matchMedia("(prefers-reduced-motion: reduce)");
+
+  // Move an element in the DOM and animate it from where it was drawn to its new place.
+  function flip(els, change) {
+    var before = els.map(function (el) { return el.getBoundingClientRect(); });
+    change();
+    els.forEach(function (el, i) {
+      el.style.transition = "none"; el.style.transform = "";
+      if (still.matches) return;
+      var b = el.getBoundingClientRect();
+      el.style.transform = "translate(" + (before[i].left - b.left) + "px," + (before[i].top - b.top) + "px)";
+      el.offsetWidth;
+      el.style.transition = "transform .22s cubic-bezier(.2,.8,.2,1)";
+      el.style.transform = "";
+    });
+  }
+
+  // Drag with pointer events, so mouse, touch and pen all work. A short movement counts as a click.
+  function draggable(chip, quiz, onMove, onDrop) {
+    chip.addEventListener("pointerdown", function (e) {
+      if (quiz.dataset.locked || e.button > 0) return;
+      var sx = e.clientX, sy = e.clientY, r = chip.getBoundingClientRect(), dragging = false;
+      var gx = sx - r.left, gy = sy - r.top;
+      try { chip.setPointerCapture(e.pointerId); } catch (err) {}
+      function move(ev) {
+        if (!dragging && Math.abs(ev.clientX - sx) + Math.abs(ev.clientY - sy) < 6) return;
+        if (!dragging) { dragging = true; chip.classList.add("dragging"); chip.style.transition = "none"; }
+        onMove(ev.clientX, ev.clientY, gx, gy);
+      }
+      function up(ev) {
+        chip.removeEventListener("pointermove", move); chip.removeEventListener("pointerup", up); chip.removeEventListener("pointercancel", up);
+        if (!dragging) return;
+        chip.classList.remove("dragging"); chip.dataset.dragged = "1";
+        setTimeout(function () { delete chip.dataset.dragged; }, 0);
+        onDrop(ev.clientX, ev.clientY);
+      }
+      chip.addEventListener("pointermove", move); chip.addEventListener("pointerup", up); chip.addEventListener("pointercancel", up);
+    });
+  }
+  function place(chip, x, y, gx, gy) {
+    chip.style.transform = "";
+    var r = chip.getBoundingClientRect();
+    chip.style.transform = "translate(" + (x - gx - r.left) + "px," + (y - gy - r.top) + "px)";
+  }
+
+  function setupOrder(quiz) {
+    var list = quiz.querySelector(".order");
+    var fb = quiz.querySelector(".fb");
+    list.querySelectorAll(".chip").forEach(function (chip) {
+      draggable(chip, quiz, function (x, y, gx, gy) {
+        var others = Array.prototype.filter.call(list.children, function (c) { return c !== chip; });
+        var target = null;
+        others.forEach(function (o) { var b = o.getBoundingClientRect(); if (target === null && y < b.top + b.height / 2) target = o; });
+        if (chip.nextElementSibling !== target && target !== chip) flip(others, function () { list.insertBefore(chip, target); });
+        place(chip, x, y, gx, gy);
+      }, function () { flip([chip], function () {}); });
+      chip.addEventListener("keydown", function (e) {
+        if (quiz.dataset.locked || (e.key !== "ArrowUp" && e.key !== "ArrowDown")) return;
+        e.preventDefault();
+        var sib = e.key === "ArrowUp" ? chip.previousElementSibling : chip.nextElementSibling;
+        if (!sib) return;
+        flip([chip, sib], function () { list.insertBefore(chip, e.key === "ArrowUp" ? sib : sib.nextElementSibling); });
+        chip.focus();
+        var pos = Array.prototype.indexOf.call(list.children, chip) + 1;
+        fb.className = "fb"; fb.textContent = "Moved to position " + pos + " of " + list.children.length + ".";
+      });
+    });
+  }
+
+  function setupSlots(quiz) {
+    var bank = quiz.querySelector(".bank");
+    var slots = Array.prototype.slice.call(quiz.querySelectorAll(".slot"));
+    var picked = null;
+    function pick(chip) {
+      if (picked) picked.setAttribute("aria-pressed", "false");
+      picked = picked === chip ? null : chip;
+      if (picked) picked.setAttribute("aria-pressed", "true");
+    }
+    function putIn(chip, slot) {
+      var old = slot && slot.querySelector(".chip");
+      var moving = old && old !== chip ? [chip, old] : [chip];
+      flip(moving, function () {
+        if (old && old !== chip) { if (chip.parentNode.classList.contains("slot")) chip.parentNode.appendChild(old); else bank.appendChild(old); }
+        (slot || bank).appendChild(chip);
+      });
+      slots.forEach(function (s) { s.classList.remove("right", "wrong"); });
+      quiz.querySelectorAll(".chip").forEach(function (c) { c.setAttribute("aria-pressed", "false"); });
+      picked = null;
+    }
+    function nearest(x, y) {
+      var best = null, bd = 64;
+      slots.forEach(function (s) {
+        var b = s.getBoundingClientRect(), d = Math.hypot(x - (b.left + b.width / 2), y - (b.top + b.height / 2));
+        if (d < bd) { bd = d; best = s; }
+      });
+      return best;
+    }
+    quiz.querySelectorAll(".chip").forEach(function (chip) {
+      draggable(chip, quiz, function (x, y, gx, gy) {
+        var s = nearest(x, y);
+        slots.forEach(function (o) { o.classList.toggle("near", o === s); });
+        if (s) {
+          // Magnet: pull the chip most of the way to the slot it is near.
+          var b = s.getBoundingClientRect(), r = chip.getBoundingClientRect();
+          var cx = b.left + (b.width - r.width) / 2 + gx, cy = b.top + (b.height - r.height) / 2 + gy;
+          x = x + (cx - x) * .6; y = y + (cy - y) * .6;
+        }
+        place(chip, x, y, gx, gy);
+      }, function (x, y) {
+        var s = nearest(x, y);
+        slots.forEach(function (o) { o.classList.remove("near"); });
+        if (s) putIn(chip, s);
+        else if (bank.getBoundingClientRect().top - 40 < y && chip.parentNode !== bank) putIn(chip, null);
+        else flip([chip], function () {});
+      });
+      chip.addEventListener("click", function (e) {
+        if (chip.dataset.dragged || quiz.dataset.locked) return;
+        e.stopPropagation();
+        var slot = chip.parentNode.classList.contains("slot") ? chip.parentNode : null;
+        if (slot && picked && picked !== chip) { putIn(picked, slot); return; }
+        if (slot && !picked) { putIn(chip, null); return; }
+        pick(chip);
+      });
+    });
+    slots.forEach(function (s) {
+      function drop() { if (picked && !quiz.dataset.locked) putIn(picked, s); }
+      s.addEventListener("click", drop);
+      s.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); drop(); } });
+    });
+  }
+
   document.querySelectorAll(".quiz").forEach(function (quiz, qi) {
     var btn = quiz.querySelector(".check");
     var fb = quiz.querySelector(".fb");
+    var kind = quiz.getAttribute("data-kind") || "choice";
+    var predict = quiz.classList.contains("predict");
+    var tries = predict ? 1 : Number(quiz.getAttribute("data-tries") || 2);
+    var used = 0, firstRight = null, hintsAtFirst = 0;
+    // Hints: an <ol class="hints"> of <li hidden> items, opened one at a time. A single data-hint works as a one-item list.
+    var hintList = quiz.querySelector(".hints");
+    if (!hintList && quiz.getAttribute("data-hint") && !predict) {
+      hintList = document.createElement("ol"); hintList.className = "hints";
+      var li = document.createElement("li"); li.hidden = true; li.textContent = quiz.getAttribute("data-hint");
+      hintList.appendChild(li); btn.parentNode.insertBefore(hintList, btn);
+    }
+    var hintItems = hintList && !predict ? Array.prototype.slice.call(hintList.children) : [];
+    var shown = 0, hintBtn = null;
+    function syncHint() {
+      if (!hintBtn) return;
+      hintBtn.disabled = shown >= hintItems.length || !!quiz.dataset.locked;
+      hintBtn.textContent = shown >= hintItems.length ? "No more hints" : "Hint " + (shown + 1) + " of " + hintItems.length;
+    }
+    function showHint() { if (shown < hintItems.length) { hintItems[shown].hidden = false; shown++; } syncHint(); }
+    if (hintItems.length) {
+      hintBtn = document.createElement("button");
+      hintBtn.type = "button"; hintBtn.className = "btn ghost hint";
+      hintBtn.addEventListener("click", showHint);
+      var row = document.createElement("div"); row.className = "actions";
+      btn.parentNode.insertBefore(row, btn); row.appendChild(btn); row.appendChild(hintBtn);
+      syncHint();
+    }
+    if (kind === "order") setupOrder(quiz);
+    if (kind === "slots") setupSlots(quiz);
+
     btn.addEventListener("click", function () {
       var conf = quiz.querySelector(".conf input:checked");
-      var right, msg;
-      if (quiz.getAttribute("data-kind") === "num") {
+      var answer = quiz.getAttribute("data-answer");
+      var right, msg = "";
+      if (kind === "num") {
         var input = quiz.querySelector('input[type="text"]');
         var raw = input.value.replace(/[,\s]/g, "");
         if (!/^\d+$/.test(raw)) { fb.className = "fb warn"; fb.textContent = "Enter a whole number first."; return; }
-        right = Number(raw) === Number(quiz.getAttribute("data-answer"));
+        right = Number(raw) === Number(answer);
         msg = right ? "Right." : "Not quite.";
-        input.readOnly = true;
+      } else if (kind === "order") {
+        var ids = Array.prototype.map.call(quiz.querySelectorAll(".order .chip"), function (c) { return c.getAttribute("data-id"); });
+        var want = answer.split(",");
+        right = ids.join(",") === want.join(",");
+        var inPlace = ids.filter(function (id, i) { return id === want[i]; }).length;
+        msg = right ? "Right." : inPlace + " of " + want.length + " are in the right place.";
+      } else if (kind === "slots") {
+        var slots = quiz.querySelectorAll(".slot");
+        var empty = Array.prototype.some.call(slots, function (s) { return !s.querySelector(".chip"); });
+        if (empty) { fb.className = "fb warn"; fb.textContent = "Fill every slot first."; return; }
+        var good = 0;
+        slots.forEach(function (s) {
+          var ok = s.querySelector(".chip").getAttribute("data-id") === s.getAttribute("data-answer");
+          if (ok) good++;
+          s.classList.toggle("right", ok); s.classList.toggle("wrong", !ok);
+        });
+        right = good === slots.length;
+        msg = right ? "Right." : good + " of " + slots.length + " slots are right.";
       } else {
-        var picked = quiz.querySelector(".choices input:checked");
-        if (!picked) { fb.className = "fb warn"; fb.textContent = "Pick an answer first."; return; }
-        right = picked.value === quiz.getAttribute("data-answer");
-        msg = picked.getAttribute("data-fb");
-        quiz.querySelectorAll(".choices input").forEach(function (r) {
-          r.disabled = true;
-          if (r.value === quiz.getAttribute("data-answer")) r.parentNode.classList.add("right");
-          else if (r === picked) r.parentNode.classList.add("wrong");
+        var pickedRadio = quiz.querySelector(".choices input:checked");
+        if (!pickedRadio) { fb.className = "fb warn"; fb.textContent = "Pick an answer first."; return; }
+        right = pickedRadio.value === answer;
+        msg = pickedRadio.getAttribute("data-fb") || (right ? "Right." : "Not quite.");
+      }
+      used++;
+      if (firstRight === null) { firstRight = right; hintsAtFirst = shown; }
+      var last = right || used >= tries;
+
+      if (!last) {
+        // Wrong, with a try left: name the problem, give the hint, keep the answer hidden.
+        if (kind === "choice") {
+          pickedRadio.checked = false; pickedRadio.disabled = true;
+          pickedRadio.parentNode.classList.add("wrong");
+        }
+        fb.className = "fb bad";
+        var before = shown; showHint();
+        fb.textContent = msg + (shown > before ? " Hint " + shown + " is open." : "") + " Try again.";
+        btn.textContent = "Check again";
+        return;
+      }
+
+      quiz.dataset.locked = "1"; syncHint();
+      if (kind === "num") quiz.querySelector('input[type="text"]').readOnly = true;
+      if (kind === "choice") quiz.querySelectorAll(".choices input").forEach(function (r) {
+        r.disabled = true;
+        if (r.value === answer) r.parentNode.classList.add("right");
+        else if (r.checked) r.parentNode.classList.add("wrong");
+      });
+      if (kind === "order") {
+        var want2 = answer.split(",");
+        quiz.querySelectorAll(".order .chip").forEach(function (c, i) {
+          c.classList.add(c.getAttribute("data-id") === want2[i] ? "right" : "wrong");
+          c.removeAttribute("tabindex");
         });
       }
+      if (kind === "slots") quiz.querySelectorAll(".chip").forEach(function (c) { c.disabled = true; });
       if (quiz.classList.contains("practice")) {
-        if (!right && conf && conf.value === "sure") msg += " You were sure, so review this rule first.";
-        if (right && conf && conf.value === "unsure") msg += " You knew more than you thought.";
+        if (!firstRight && conf && conf.value === "sure") msg += " You were sure, so review this rule first.";
+        if (firstRight && conf && conf.value === "unsure") msg += " You knew more than you thought.";
         quiz.querySelectorAll(".conf input").forEach(function (r) { r.disabled = true; });
-        results[qi] = { right: right, sureWrong: !right && conf && conf.value === "sure" };
+        results[qi] = { right: firstRight, clean: firstRight && hintsAtFirst === 0, sureWrong: !firstRight && conf && conf.value === "sure" };
       }
+      if (predict && !right) msg += " A wrong guess is fine: the explanation below shows why.";
       fb.className = "fb " + (right ? "ok" : "bad");
       fb.textContent = msg;
       btn.disabled = true;
@@ -484,10 +773,11 @@ flowchart LR
       var keys = Object.keys(results);
       if (keys.length === practiceTotal) {
         var ok = keys.filter(function (k) { return results[k].right; }).length;
+        var clean = keys.filter(function (k) { return results[k].clean; }).length;
         var sw = keys.filter(function (k) { return results[k].sureWrong; }).length;
         var s = document.getElementById("summary");
         s.hidden = false;
-        s.textContent = ok + " of " + practiceTotal + " correct." + (sw ? " " + sw + " confident and wrong: start your review there." : " No confident mistakes.");
+        s.textContent = ok + " of " + practiceTotal + " right on the first try, " + clean + " without hints." + (sw ? " " + sw + " confident and wrong: start your review there." : " No confident mistakes.");
       }
     });
   });

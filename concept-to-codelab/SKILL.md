@@ -35,7 +35,8 @@ Follow the project's style guide when it has one. Otherwise:
 
 Learners remember what they work to retrieve, not what they reread. Build effortful recall into every lesson. Read [references/learning-principles.md](references/learning-principles.md) for the reasoning, examples, and mistakes to avoid.
 
-- **Generate first.** Open each teaching step with a short prediction or attempt before the explanation. Then explain why the right answer works and why a likely wrong one fails.
+- **Generate first.** Open each teaching step with a short setup, then a prediction the learner can reason toward. Label it "a guess is fine". Then explain why the right answer works and why a likely wrong one fails.
+- **Hint ladder.** Give each practice item two or three hints that get more specific, and recall items one. Learners can open hints at any time. A wrong answer opens the next hint and allows one more try before the answer shows.
 - **Retrieve before review.** From the second teaching step on, start with one recall question about the previous step. The learner answers from memory, then checks.
 - **Interleave practice.** Mix problem types and do not follow the step order, so the learner must choose which rule applies.
 - **Calibrate.** Ask the learner to commit to an answer before showing it. Feedback names the misconception behind each likely wrong answer.
