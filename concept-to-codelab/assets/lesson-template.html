@@ -259,6 +259,8 @@ figure.grouping figcaption { text-align: center; color: var(--fg); font-size: 16
 .pager { position: static; max-width: 704px; margin: 0 auto; padding: 20px 32px 32px; border: 0; background: transparent; }
 .pager .btn { background: transparent; border-color: transparent; color: var(--accent); font-weight: 400; }
 .pager #pos { font-size: 13px; }
+.lesson-credit { max-width: 704px; margin: 0 auto; padding: 0 32px 32px; color: var(--muted); font-size: 14px; }
+.lesson-credit a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 .summary, .chip, .slot, .bank { box-shadow: none; border-radius: 6px; }
 details > summary { min-height: 44px; padding-block: 10px; font-weight: 600; }
 .reading-all .lesson-progress { display: none; }
@@ -280,6 +282,7 @@ details > summary { min-height: 44px; padding-block: 10px; font-weight: 600; }
   .step h2, .quiz .q { font-size: 19px; }
   .predict .check { width: 100%; }
   .pager { padding: 12px 20px 24px; }
+  .lesson-credit { padding: 0 20px 24px; }
   .meta div { grid-template-columns: 1fr; gap: 2px; }
   .meta { gap: 16px; }
   .slot-line { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
@@ -549,6 +552,7 @@ flowchart LR
       <span id="pos">Step 1 of 5</span>
       <button class="btn ghost" id="next">Next</button>
     </nav>
+    <footer class="lesson-credit"><a href="https://github.com/natiginfo/concept-to-codelab">Generated with the Concept to Codelab skill</a></footer>
   </main>
 </div>
 
