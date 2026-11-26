@@ -66,6 +66,18 @@ In a fresh session with the skill installed, try these prompts without naming th
 
 For a bug or improvement, include the prompt you tried, what you expected, and a sample output you can share publicly.
 
+## Preview a template change before merging
+
+Open `examples/bytes-and-kib.html` in a browser from your working branch, or serve the checkout:
+
+```sh
+python3 -m http.server 3000
+```
+
+Visit `http://localhost:3000/examples/bytes-and-kib.html#step-2`. Check the prediction at phone and desktop widths, then try feedback, practice hints, Steps, Read all, themes and print. The example follows the maintained template; regenerate it after template changes by removing the template's introductory authoring comment and `LESSON-NAV` / `LESSON-BODY` marker comments.
+
+For a shareable branch URL, a service such as [Cloudflare Pages](https://developers.cloudflare.com/pages/configuration/preview-deployments/) can deploy pull requests separately from production. This repository has no deployment workflow configured. GitHub Pages can publish a chosen branch, but changing its publishing source changes that site's deployment; it is not a separate preview of every pull request. The sample link above belongs to the main website, whose publishing setup is separate from this repository.
+
 ## License
 
 Released under the [MIT License](LICENSE).

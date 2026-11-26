@@ -7,31 +7,31 @@
 <title>Convert between bytes and KiB</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap">
 <style>
 /* Layout: sticky top bar; numbered step list on the left (drawer on phones); one step at a time with Back/Next, or "Read all". */
 :root {
-  --bg:#ffffff; --side:#f7f8fa; --fg:#0f172a; --muted:#5b6475; --line:#e5e7eb; --code:#f4f5f7;
-  --accent:#2563eb; --accent-soft:#eef3fe; --on-accent:#fff; --paper:#fbfcfe; --bar:#ffffff;
-  --bar-fg:#0f172a; --bar-muted:#5b6475; --ok:#15803d; --ok-soft:#e8f5ec; --bad:#b91c1c;
+  --bg:#ffffff; --side:#fafbf9; --fg:#202420; --muted:#62685f; --line:#e2e4df; --code:#f4f5f1;
+  --accent:#23644c; --accent-soft:#e7efe7; --on-accent:#fff; --paper:#fafbf9; --bar:#ffffff;
+  --bar-fg:#202420; --bar-muted:#62685f; --ok:#15803d; --ok-soft:#e8f5ec; --bad:#b91c1c;
   --bad-soft:#fdecec; --warn:#92400e; --warn-soft:#fdf3e1;
   --shadow:0 1px 2px rgb(0 0 0/.04),0 4px 14px rgb(0 0 0/.05);
-  --font: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: "JetBrains Mono", Menlo, Consolas, monospace;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg:#0b0d12; --side:#10131a; --fg:#e6e8ee; --muted:#9aa3b2; --line:#222733; --code:#141821;
-    --accent:#6b9bff; --accent-soft:#152039; --on-accent:#0b1020; --paper:#121620; --bar:#0b0d12;
-    --bar-fg:#e6e8ee; --bar-muted:#9aa3b2; --ok:#4ade80; --ok-soft:#122219; --bad:#f87171;
+    --bg:#141815; --side:#191e1a; --fg:#e5eae4; --muted:#abb5a9; --line:#354036; --code:#202821;
+    --accent:#9bceb4; --accent-soft:#263c30; --on-accent:#14251b; --paper:#1b231d; --bar:#141815;
+    --bar-fg:#e5eae4; --bar-muted:#abb5a9; --ok:#4ade80; --ok-soft:#122219; --bad:#f87171;
     --bad-soft:#2a1414; --warn:#fbbf24; --warn-soft:#2a2010; --shadow:none;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg:#0b0d12; --side:#10131a; --fg:#e6e8ee; --muted:#9aa3b2; --line:#222733; --code:#141821;
-  --accent:#6b9bff; --accent-soft:#152039; --on-accent:#0b1020; --paper:#121620; --bar:#0b0d12;
-  --bar-fg:#e6e8ee; --bar-muted:#9aa3b2; --ok:#4ade80; --ok-soft:#122219; --bad:#f87171;
+  --bg:#141815; --side:#191e1a; --fg:#e5eae4; --muted:#abb5a9; --line:#354036; --code:#202821;
+  --accent:#9bceb4; --accent-soft:#263c30; --on-accent:#14251b; --paper:#1b231d; --bar:#141815;
+  --bar-fg:#e5eae4; --bar-muted:#abb5a9; --ok:#4ade80; --ok-soft:#122219; --bad:#f87171;
   --bad-soft:#2a1414; --warn:#fbbf24; --warn-soft:#2a2010; --shadow:none;
   color-scheme: dark;
 }
@@ -152,39 +152,6 @@ details[open] > summary { margin-bottom: 8px; }
 }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 
-/* Look: quiet surfaces, pill controls, a progress line under the top bar, and ✓/✕ next to colour. */
-body { font-size: 17px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
-.topbar { border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--bar) 88%, transparent); backdrop-filter: saturate(1.4) blur(8px); }
-.tb-title small { letter-spacing: .12em; font-weight: 600; }
-.bar-btn { border-color: var(--line); border-radius: 999px; padding: 6px 14px; transition: border-color .15s; }
-.bar-btn:hover { border-color: var(--bar-muted); }
-.bar-btn[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
-#progress { position: absolute; left: 0; bottom: -1px; height: 2px; width: 0; background: var(--accent); transition: width .4s ease; }
-.steps a { transition: background .15s; }
-.steps a.done .num { background: var(--accent-soft); border-color: var(--accent-soft); }
-.step { max-width: 68ch; gap: 20px; }
-.step h1, .step h2 { letter-spacing: -.02em; }
-.step h1 { font-size: clamp(1.75rem, 3.6vw, 2.4rem); line-height: 1.15; }
-.step h2 { font-size: 1.3rem; margin-top: 16px; }
-.dur { width: fit-content; padding: 3px 10px; border-radius: 999px; background: var(--code); font-size: .82rem; }
-.callout { border-radius: 12px; padding: 18px 20px; }
-.callout.try { box-shadow: inset 3px 0 0 var(--accent); }
-.callout.note { background: var(--paper); border-style: solid; border-color: var(--line); box-shadow: var(--shadow); }
-.choices label { border-radius: 10px; padding: 12px 14px; transition: border-color .15s, background .15s; }
-.choices label:hover { border-color: var(--muted); }
-.choices label.right::after { content: "✓"; margin-left: auto; color: var(--ok); font-weight: 700; }
-.choices label.wrong::after { content: "✕"; margin-left: auto; color: var(--bad); font-weight: 700; }
-.btn { border-radius: 999px; padding: 10px 22px; font-weight: 600; transition: transform .1s, filter .15s; }
-.btn:hover:not(:disabled) { filter: brightness(1.08); }
-.btn:active:not(:disabled) { transform: translateY(1px); }
-.fb { border-radius: 10px; padding: 12px 14px; }
-.fb.ok::before { content: "✓ "; font-weight: 700; }
-.fb.bad::before { content: "✕ "; font-weight: 700; }
-.quiz.practice { border-radius: 12px; background: var(--paper); box-shadow: var(--shadow); }
-.summary, figure.diagram pre.mermaid { border-radius: 12px; }
-.pager { background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: blur(8px); }
-@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
-
 /* Predict: a guess before the explanation, lighter than a graded check. */
 .callout.predict { background: transparent; border: 1.5px dashed color-mix(in srgb, var(--accent) 45%, var(--line)); box-shadow: none; }
 /* Drag quizzes: chips snap into an order or into slots. Tap or Enter also works; arrow keys reorder. */
@@ -213,24 +180,134 @@ ol.order .chip.wrong::after { content: "✕"; color: var(--bad); letter-spacing:
   .hints li::marker { color: var(--accent); font-weight: 600; }
   .hints:not(:has(li:not([hidden]))) { display: none; }
   .actions { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
+
+/* Visual lesson: readable type, quiet navigation and one dominant task action. */
+* { box-sizing: border-box; }
+html { scroll-padding-top: 88px; }
+body { margin: 0; font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+:root { --action: #202b25; --action-fg: #fff; --group-a: #e6edda; --group-b: #dce8eb; --group-c: #fbf0cc; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --action: #dce9df; --action-fg: #18251d; --group-a: #36452b; --group-b: #293f45; --group-c: #4b4025; }
+}
+:root[data-theme="dark"] { --action: #dce9df; --action-fg: #18251d; --group-a: #36452b; --group-b: #293f45; --group-c: #4b4025; }
+.topbar { min-height: 64px; gap: 20px; padding-inline: 32px; border-bottom: 1px solid var(--line); }
+.tb-title { display: flex; align-items: center; gap: 24px; }
+.tb-title small { color: var(--fg); font-size: 16px; font-weight: 600; letter-spacing: 0; text-transform: none; padding-right: 24px; border-right: 1px solid var(--line); white-space: nowrap; }
+.tb-title strong { font-size: 16px; font-weight: 600; }
+.tb-right { gap: 12px; }
+.tb-right #remaining { display: none; }
+.bar-btn { min-height: 44px; border-color: var(--line); border-radius: 6px; padding: 8px 12px; }
+#readall { border-color: transparent; color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.layout { grid-template-columns: 224px minmax(0, 1fr); min-height: calc(100dvh - 64px); }
+.steps { padding-block: 32px; }
+.steps-inner { top: 96px; gap: 24px; padding-inline: 16px; }
+.steps-title { margin: 0; padding-inline: 12px; font-weight: 600; }
+.steps a { min-height: 44px; border-radius: 4px; font-size: 15px; padding: 10px 12px; }
+.steps .num { display: none; }
+.steps a[aria-current="step"] { font-weight: 600; }
+.side-foot { margin: 0 12px; padding: 24px 0 0; }
+.side-foot a { min-height: 44px; text-decoration: underline; text-underline-offset: 3px; }
+main { display: block; }
+.content { padding: 48px 32px 24px; }
+.step { width: 100%; max-width: 640px; gap: 20px; }
+.step h1 { font-size: 24px; line-height: 1.25; font-weight: 600; letter-spacing: -.015em; }
+.step h2 { font-size: 19px; line-height: 1.35; font-weight: 600; margin-top: 12px; }
+.dur { font-size: 13px; padding: 0; background: transparent; }
+.lesson-progress { display: flex; align-items: center; gap: 16px; max-width: 640px; margin: 0 auto 32px; color: var(--muted); font-size: 14px; }
+.progress-track { flex: 1; height: 5px; background: var(--line); border-radius: 3px; overflow: hidden; }
+#progress { height: 100%; background: var(--accent); transition: width .2s; }
+#progress-label { white-space: nowrap; }
+.callout, .callout.try, .callout.note, .callout.predict, .quiz.practice { border: 0; border-radius: 0; padding: 0; background: transparent; box-shadow: none; gap: 16px; }
+.callout.note { border-top: 1px solid var(--line); padding-top: 24px; }
+.quiz.practice + .quiz.practice { border-top: 1px solid var(--line); padding-top: 28px; margin-top: 8px; }
+.tag { font-size: 14px; font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--muted); }
+.quiz .q { font-size: 19px; line-height: 1.4; font-weight: 600; }
+.predict .q { grid-row: 1; }
+.predict .tag { grid-row: 2; }
+.choices { gap: 0; border-top: 1px solid var(--line); }
+.choices label { min-height: 48px; padding: 12px 16px; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: transparent; }
+.choices label:hover { background: var(--code); }
+.choices label:has(input:checked) { background: var(--accent-soft); }
+.choices label.right { background: var(--ok-soft); }
+.choices label.wrong { background: var(--bad-soft); }
+.choices label.right::after { content: "✓"; margin-left: auto; color: var(--ok); }
+.choices label.wrong::after { content: "✕"; margin-left: auto; color: var(--bad); }
+.choices input { width: 18px; height: 18px; flex: none; }
+.btn { min-height: 44px; border: 1px solid var(--action); border-radius: 6px; padding: 10px 20px; background: var(--action); color: var(--action-fg); font-size: 16px; font-weight: 600; }
+.btn:hover:not(:disabled) { filter: brightness(1.12); }
+.btn.ghost { color: var(--accent); border-color: var(--line); background: transparent; }
+.btn:disabled { opacity: .65; }
+.conf label { border-radius: 4px; min-height: 44px; }
+.fb { border-radius: 6px; padding: 12px 16px; }
+.fb.ok::before { content: "✓ "; }
+.fb.bad::before { content: "✕ "; }
+.predict[data-locked] .check, .predict[data-locked] .prediction-next { display: none; }
+.prediction-next { color: var(--muted); font-size: 14px; }
+figure.diagram pre.mermaid { border: 0; background: transparent; padding: 8px 0; }
+figure.grouping { gap: 12px; padding-block: 12px; }
+figure.grouping pre.mermaid { min-height: 112px; }
+figure.diagram svg, figure.diagram .nodeLabel { font-family: var(--font) !important; }
+figure.grouping svg { width: 100%; max-width: 520px !important; }
+#theme { min-width: 44px; }
+figure.grouping figcaption { text-align: center; color: var(--fg); font-size: 16px; }
+.pager { position: static; max-width: 704px; margin: 0 auto; padding: 20px 32px 32px; border: 0; background: transparent; }
+.pager .btn { background: transparent; border-color: transparent; color: var(--accent); font-weight: 400; }
+.pager #pos { font-size: 13px; }
+.summary, .chip, .slot, .bank { box-shadow: none; border-radius: 6px; }
+details > summary { min-height: 44px; padding-block: 10px; font-weight: 600; }
+.reading-all .lesson-progress { display: none; }
+@media (max-width: 859px) {
+  html { scroll-padding-top: 80px; }
+  .topbar { min-height: 64px; padding-inline: max(20px, env(safe-area-inset-left)); gap: 12px; }
+  .tb-title small { display: none; }
+  .tb-title strong { font-size: 16px; }
+  #menu { order: 3; }
+  .tb-right { display: none; }
+  .layout { grid-template-columns: minmax(0, 1fr); }
+  .steps { top: calc(env(safe-area-inset-top, 0px) + 64px); background: var(--bg); }
+  .steps-inner { padding: 12px 20px; }
+  .side-tools { display: flex; gap: 8px; flex-wrap: wrap; padding: 12px; }
+  .content { padding: 24px max(20px, env(safe-area-inset-left)) 16px; }
+  .lesson-progress { margin-bottom: 28px; }
+  .step { gap: 20px; }
+  .step h1 { font-size: 23px; }
+  .step h2, .quiz .q { font-size: 19px; }
+  .predict .check { width: 100%; }
+  .pager { padding: 12px 20px 24px; }
+  .meta div { grid-template-columns: 1fr; gap: 2px; }
+  .meta { gap: 16px; }
+  .slot-line { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .slot { min-width: 4em; margin: 0; }
+}
+@media (min-width: 860px) { .side-tools { display: none; } }
+@media print {
+  :root { --bg: #fff; --fg: #202420; --muted: #51574f; --line: #bbb; --code: #f4f5f1; --accent: #23644c; }
+  .lesson-progress, .check, .hint, .conf, .side-tools { display: none !important; }
+  .content { padding: 0; }
+  .step { max-width: none; break-inside: auto; }
+  .step + .step { margin-top: 32px; }
+  table, figure { break-inside: avoid; }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; } }
+
 </style>
 
 </head>
 <body>
 <header class="topbar">
   <button class="bar-btn" id="menu" aria-controls="steps" aria-expanded="false">Steps</button>
-  <div class="tb-title"><small>Codelab</small><strong>Convert between bytes and KiB</strong></div>
+  <div class="tb-title"><small>Concept to Codelab</small><strong>Convert between bytes and KiB</strong></div>
   <div class="tb-right">
     <span id="remaining">10 min left</span>
     <button class="bar-btn" id="theme" aria-label="Theme">◐</button>
     <button class="bar-btn" id="readall" aria-pressed="false">Read all</button>
   </div>
-  <div id="progress" aria-hidden="true"></div>
 </header>
 
 <div class="layout" id="layout">
   <nav class="steps" id="steps" aria-label="Lesson steps">
     <div class="steps-inner">
+      <p class="steps-title">Lesson steps</p>
       <ol>
         <li><a href="#step-1" data-step="1"><span class="num"><span>1</span></span>Overview</a></li>
         <li><a href="#step-2" data-step="2"><span class="num"><span>2</span></span>Bytes to KiB</a></li>
@@ -244,8 +321,9 @@ ol.order .chip.wrong::after { content: "✕"; color: var(--bad); letter-spacing:
 
   <main>
     <div class="content">
+      <div class="lesson-progress" aria-label="Lesson position"><div class="progress-track"><div id="progress"></div></div><span id="progress-label">1 of 5</span></div>
       <section class="step" id="step-1" data-min="1">
-        <h1>1. Overview</h1>
+        <h1>Overview</h1>
         <p class="dur">Duration: 1 min</p>
         <dl class="meta">
           <div><dt>You will learn</dt><dd>To convert whole numbers of bytes and KiB in either direction.</dd></div>
@@ -266,22 +344,34 @@ ol.order .chip.wrong::after { content: "✕"; color: var(--bad); letter-spacing:
       </section>
 
       <section class="step" id="step-2" data-min="3">
-        <h1>2. Convert bytes to KiB</h1>
-        <p class="dur">Duration: 3 min</p>
-        <p>Computers count memory in powers of two. A kibibyte (KiB) is a group of 1,024 bytes.</p>
+        <h1>Count the groups</h1>
+        <p>A kibibyte (KiB) holds 1,024 bytes.</p>
+        <figure class="diagram grouping">
+          <figcaption>3,072 bytes total</figcaption>
+          <pre class="mermaid">
+flowchart LR
+  accTitle: Three groups of bytes
+  accDescr: A total of 3,072 bytes is split into three equal groups, each containing 1,024 bytes.
+  A["`1,024
+bytes`"] ~~~ B["`1,024
+bytes`"] ~~~ C["`1,024
+bytes`"]
+          </pre>
+        </figure>
         <div class="callout try predict quiz" data-answer="b" data-reveal="s2-work">
-          <p class="tag">Predict · a guess is fine</p>
-          <p class="q">How many KiB is 3,072 bytes?</p>
+          <p class="tag">Make a prediction. A guess is fine.</p>
+          <p class="q">How many KiB is that?</p>
           <fieldset class="choices"><legend class="sr">Choose one</legend>
             <label><input type="radio" name="q-s2" value="a" data-fb="3.072 divides by 1,000. A KiB is 1,024 bytes, not 1,000.">3.072 KiB</label>
             <label><input type="radio" name="q-s2" value="b" data-fb="Right. 3,072 bytes hold exactly three groups of 1,024.">3 KiB</label>
             <label><input type="radio" name="q-s2" value="c" data-fb="3,145,728 multiplies by 1,024. Going from bytes to KiB makes the number smaller.">3,145,728 KiB</label>
           </fieldset>
-          <button class="btn check">Lock in my guess</button>
+          <button class="btn check">Check prediction</button>
+          <p class="prediction-next">The explanation comes next.</p>
           <p class="fb" aria-live="polite"></p>
         </div>
         <div id="s2-work" class="stack" hidden>
-          <p>To express 3,072 bytes in KiB, count the groups of 1,024.</p>
+          <p>Computers count memory in powers of two. To express 3,072 bytes in KiB, count the groups of 1,024.</p>
           <ol class="work">
             <li>Start with 3,072 bytes.</li>
             <li>Divide by 1,024 bytes per KiB: <code>3,072 ÷ 1,024 = 3</code></li>
@@ -314,7 +404,7 @@ flowchart LR
       </section>
 
       <section class="step" id="step-3" data-min="2">
-        <h1>3. Convert KiB to bytes</h1>
+        <h1>Convert KiB to bytes</h1>
         <p class="dur">Duration: 2 min</p>
         <div class="callout try quiz" data-answer="b" data-hint="KiB counts in powers of two: 2 to the 10th.">
           <p class="tag">Recall</p>
@@ -343,7 +433,7 @@ flowchart LR
       </section>
 
       <section class="step" id="step-4" data-min="5">
-        <h1>4. Practice</h1>
+        <h1>Practice</h1>
         <p class="dur">Duration: 5 min</p>
         <p>Answer from memory. Pick how sure you are, then check. Use the <a href="#step-1">quick reference</a> only after you check.</p>
 
@@ -433,7 +523,7 @@ flowchart LR
       </section>
 
       <section class="step" id="step-5" data-min="1">
-        <h1>5. Review later</h1>
+        <h1>Review later</h1>
         <p class="dur">Duration: 1 min now, 2 min later</p>
         <p>Answer these on paper without looking back at the lesson.</p>
         <ul class="review-list">
@@ -447,7 +537,7 @@ flowchart LR
     <nav class="pager" aria-label="Step navigation">
       <button class="btn ghost" id="back">Back</button>
       <span id="pos">Step 1 of 5</span>
-      <button class="btn" id="next">Next</button>
+      <button class="btn ghost" id="next">Next</button>
     </nav>
   </main>
 </div>
@@ -471,17 +561,20 @@ flowchart LR
 
   function render() {
     var n = state.step;
+    document.querySelector(".tb-title strong").textContent = matchMedia("(max-width: 859px)").matches ? links[n - 1].lastChild.textContent.trim() : document.title;
     layout.classList.toggle("reading-all", state.readAll);
     readBtn.setAttribute("aria-pressed", String(state.readAll));
     steps.forEach(function (s, i) { s.hidden = !state.readAll && i + 1 !== n; });
     links.forEach(function (a) {
       var k = Number(a.getAttribute("data-step"));
       if (k === n) a.setAttribute("aria-current", "step"); else a.removeAttribute("aria-current");
-      a.classList.toggle("done", state.done.indexOf(k) !== -1 && k !== n);
+      a.classList.remove("done");
     });
+    document.getElementById("progress-label").textContent = n + " of " + steps.length;
+    document.getElementById("progress").style.width = (100 * n / steps.length) + "%";
     document.getElementById("pos").textContent = "Step " + n + " of " + steps.length;
     document.getElementById("back").disabled = n === 1;
-    document.getElementById("next").textContent = n === steps.length ? "Done" : "Next";
+    document.getElementById("next").textContent = n === steps.length ? "Finish lesson" : "Next step";
     document.getElementById("remaining").textContent = minutesLeft(n) + " min left";
     diagrams();
   }
@@ -491,12 +584,15 @@ flowchart LR
 
   function go(n, scroll) {
     n = Math.max(1, Math.min(steps.length, n));
-    if (n > state.step && state.done.indexOf(state.step) === -1) state.done.push(state.step);
     state.step = n; save(); render();
     if (location.hash !== "#step-" + n) history.replaceState(null, "", "#step-" + n);
     if (state.readAll) document.getElementById("step-" + n).scrollIntoView();
     else if (scroll !== false) window.scrollTo(0, 0);
-    navEl.classList.remove("open"); menu.setAttribute("aria-expanded", "false");
+    closeMenu();
+    if (scroll !== false) {
+      var heading = steps[n - 1].querySelector("h1");
+      heading.setAttribute("tabindex", "-1"); heading.focus({ preventScroll: true });
+    }
   }
 
   document.addEventListener("click", function (e) {
@@ -510,10 +606,37 @@ flowchart LR
     if (state.step === steps.length) { if (state.done.indexOf(state.step) === -1) state.done.push(state.step); save(); render(); return; }
     go(state.step + 1);
   });
-  readBtn.addEventListener("click", function () { state.readAll = !state.readAll; save(); render(); });
+  readBtn.addEventListener("click", function () { state.readAll = !state.readAll; save(); render(); closeMenu(); menu.focus(); });
+  var tools = document.createElement("div"); tools.className = "side-tools";
+  function placeTools() {
+    var mobile = matchMedia("(max-width: 859px)").matches;
+    [document.getElementById("theme"), readBtn].forEach(function (el) { (mobile ? tools : document.querySelector(".tb-right")).appendChild(el); });
+    if (mobile) navEl.querySelector(".steps-inner").appendChild(tools); else tools.remove();
+    if (!mobile) closeMenu();
+    render();
+  }
+  function closeMenu() {
+    navEl.classList.remove("open"); menu.setAttribute("aria-expanded", "false");
+    document.querySelector("main").inert = false;
+    document.body.style.overflow = "";
+  }
+  matchMedia("(max-width: 859px)").addEventListener("change", placeTools);
+  placeTools();
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && navEl.classList.contains("open")) { closeMenu(); menu.focus(); }
+    if (e.key === "Tab" && navEl.classList.contains("open")) {
+      var items = [menu].concat(Array.prototype.slice.call(navEl.querySelectorAll("a, button")));
+      var first = items[0], last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
   menu.addEventListener("click", function () {
     var open = navEl.classList.toggle("open");
     menu.setAttribute("aria-expanded", String(open));
+    document.querySelector("main").inert = open;
+    document.body.style.overflow = open ? "hidden" : "";
+    if (open) navEl.querySelector('[aria-current="step"]').focus();
   });
   window.addEventListener("hashchange", function () {
     var m = location.hash.match(/^#step-(\d+)$/); if (m) go(Number(m[1]));
@@ -797,8 +920,10 @@ flowchart LR
       // Diagrams take their colours from the page, so they match light and dark.
       var cs = getComputedStyle(root), v = function (n) { return cs.getPropertyValue(n).trim(); };
       var dark = root.dataset.theme === "dark" || (root.dataset.theme !== "light" && matchMedia("(prefers-color-scheme: dark)").matches);
-      mermaid.initialize({ startOnLoad: false, securityLevel: "strict", theme: "base", themeVariables: {
-        darkMode: dark, background: v("--code"), fontFamily: v("--font"),
+      var groupingTheme = { groupA: v("--group-a"), groupB: v("--group-b"), groupC: v("--group-c"), ink: v("--fg") };
+      window.codelabGroupingTheme = groupingTheme;
+      mermaid.initialize({ flowchart: { htmlLabels: false, rankSpacing: 1, nodeSpacing: 1, padding: 18 }, startOnLoad: false, securityLevel: "strict", theme: "base", themeVariables: {
+        darkMode: dark, background: v("--code"), fontFamily: "Source Sans 3, sans-serif",
         primaryColor: v("--bg"), primaryTextColor: v("--fg"), primaryBorderColor: v("--accent"),
         lineColor: v("--muted"), textColor: v("--fg"), secondaryColor: v("--accent-soft"), tertiaryColor: v("--side"),
         noteBkgColor: v("--warn-soft"), noteTextColor: v("--fg"), noteBorderColor: v("--warn"),
@@ -809,6 +934,10 @@ flowchart LR
     document.fonts.ready.then(function () {
       window.codelabDiagrams = function () {
         var nodes = Array.prototype.filter.call(document.querySelectorAll("pre.mermaid:not([data-processed])"), function (n) { return n.getClientRects().length > 0; });
+        nodes.filter(function (n) { return n.closest(".grouping"); }).forEach(function (n) {
+          var t = window.codelabGroupingTheme;
+          n.textContent = n.dataset.src + "\n  style A fill:" + t.groupA + ",stroke:" + t.ink + ",color:" + t.ink + "\n  style B fill:" + t.groupB + ",stroke:" + t.ink + ",color:" + t.ink + "\n  style C fill:" + t.groupC + ",stroke:" + t.ink + ",color:" + t.ink;
+        });
         if (nodes.length) mermaid.run({ nodes: nodes, suppressErrors: true });
       };
       window.codelabDiagrams();
@@ -819,7 +948,7 @@ flowchart LR
 </script>
 <script>
 // Theme: the ◐ button cycles system, light and dark. The choice is kept for every lesson.
-// The progress line fills as steps are marked done.
+// The progress line shows lesson position; it does not imply answers are correct.
 (function () {
   var root = document.documentElement, KEY = "codelab-theme", modes = ["system", "light", "dark"];
   var btn = document.getElementById("theme"), mode = "system";
@@ -844,10 +973,6 @@ flowchart LR
     apply(); redraw();
   });
   matchMedia("(prefers-color-scheme: dark)").addEventListener("change", redraw);
-  var links = document.querySelectorAll(".steps ol a"), bar = document.getElementById("progress");
-  function progress() { bar.style.width = (100 * document.querySelectorAll(".steps ol a.done").length / links.length) + "%"; }
-  new MutationObserver(progress).observe(document.querySelector(".steps"), { subtree: true, attributes: true, attributeFilter: ["class"] });
-  progress();
 })();
 </script>
 </body>
