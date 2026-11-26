@@ -12,6 +12,8 @@ Use these snippets to fill a copy of `assets/lesson-template.html`. Read the tem
 
 The page computes the time left from each section's `data-min`. The Back and Next buttons, the step list, Read all and saved progress need no edits.
 
+Finish lesson shows a saved completion message and links back to the final review step and the practice section when present. It also works at the end of Read all. Finishing records the learner's choice to finish, not a passing score, and does not clear answers or prevent revisiting steps. Keep the completion section outside the lesson replacement markers.
+
 The visual template uses a 640px reading column, 16px body text, 23–24px headings, forest-green selection and charcoal task buttons. Phone navigation moves the lesson outline, theme and Read all controls into Steps. Progress shows the current step, not mastery. Keep one dominant task action and use spacing and dividers instead of nested callout cards. Place a concept's diagram beside its first explanation; the sample's grouping diagram shows equal groups before the prediction. Mermaid diagrams use page colors in both themes.
 
 ## Rules the script relies on
