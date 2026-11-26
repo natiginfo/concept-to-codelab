@@ -19,7 +19,7 @@ license: MIT
   If no one can answer, assume New.
 - Match the requested duration. When the request leaves it open, assume a roughly 20-minute route. Ask about anything else only when the source material leaves the learning outcome unclear, and put all questions in one round. If a shorter route would help, name the steps that still cover the objective and include a practice check. Reuse existing lesson structure and publishing tools where practical.
 - When the project has no lesson structure, use this order: a header with time, goal, and prerequisites; the quick reference; one section per teaching step, titled by the task it teaches; practice; answers and feedback; review later.
-- Deliver every lesson as one interactive HTML page. Markdown is not an output format: adapt a Markdown lesson to HTML. In a project without its own lesson styling or navigation, start from [assets/lesson-template.html](assets/lesson-template.html). Replace the sample lesson, keep its checked-answer patterns, and give each lesson its own storage key.
+- Deliver every lesson as one interactive HTML page. Markdown is not an output format: adapt a Markdown lesson to HTML. In a project without its own lesson styling or navigation, copy [assets/lesson-template.html](assets/lesson-template.html) with a shell command and fill it from [references/quiz-patterns.md](references/quiz-patterns.md). Read the template itself only to change its styling or script.
 
 ## Write for learners
 
