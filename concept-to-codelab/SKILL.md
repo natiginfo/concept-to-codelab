@@ -1,6 +1,6 @@
 ---
 name: concept-to-codelab
-description: Create or adapt a self-paced interactive HTML codelab, guided lab, or step-by-step technical lesson from a concept, lecture notes, course materials, or an existing lesson. Use when learners need to remember a concept, not only understand it: a worked example, a quick reference, and practice that the page checks.
+description: Create or adapt a self-paced interactive HTML codelab, guided lab, or step-by-step technical lesson from a concept, lecture notes, course materials, or an existing lesson. Use when learners need to remember a concept, not only understand it. Each lesson has a worked example, a quick reference, and practice that the page checks.
 license: MIT
 ---
 
