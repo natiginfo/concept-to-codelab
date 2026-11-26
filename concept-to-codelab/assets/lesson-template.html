@@ -214,6 +214,11 @@ ol.order .chip.wrong::after { content: "✕"; color: var(--bad); letter-spacing:
 .slot.right { border: 1.5px solid var(--ok); background: var(--ok-soft); }
 .slot.wrong { border: 1.5px solid var(--bad); background: var(--bad-soft); }
 .bank { display: flex; flex-wrap: wrap; gap: 8px; min-height: 64px; padding: 8px; border: 1px dashed var(--line); border-radius: 12px; }
+  .hints { margin: .25rem 0 .75rem; padding-left: 1.4rem; color: var(--muted); }
+  .hints li { margin: .2rem 0; }
+  .hints li::marker { color: var(--accent); font-weight: 600; }
+  .hints:not(:has(li:not([hidden]))) { display: none; }
+  .actions { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; }
 </style>
 
 </head>
@@ -351,8 +356,13 @@ flowchart LR
         <p class="dur">Duration: 5 min</p>
         <p>Answer from memory. Pick how sure you are, then check. Use the <a href="#step-1">quick reference</a> only after you check.</p>
 
-        <div class="quiz practice" data-kind="num" data-answer="5" data-hint="How many groups of 1,024 fit in 5,120?">
+        <div class="quiz practice" data-kind="num" data-answer="5">
           <p class="q">1. How many KiB are in 5,120 bytes?</p>
+          <ol class="hints">
+            <li hidden>KiB counts in powers of two, not tens.</li>
+            <li hidden>One KiB is 1,024 bytes, so divide.</li>
+            <li hidden>5,120 ÷ 1,024 = ?</li>
+          </ol>
           <div class="num-row"><label class="sr" for="p1">Answer</label><input type="text" id="p1" inputmode="numeric" autocomplete="off"><span class="unit">KiB</span></div>
           <fieldset class="conf"><legend>I am</legend><label><input type="radio" name="c1" value="sure">sure</label><label><input type="radio" name="c1" value="unsure">unsure</label></fieldset>
           <button class="btn check">Check</button>
@@ -360,8 +370,13 @@ flowchart LR
           <p class="explain" hidden><strong>5 KiB.</strong> Divide <code>5,120 ÷ 1,024</code> to count the groups. Check by multiplying <code>5 × 1,024</code>.</p>
         </div>
 
-        <div class="quiz practice" data-kind="num" data-answer="7168" data-hint="You already know there are 7 groups. How many bytes is that?">
+        <div class="quiz practice" data-kind="num" data-answer="7168">
           <p class="q">2. How many bytes are in 7 KiB?</p>
+          <ol class="hints">
+            <li hidden>KiB to bytes makes the number bigger.</li>
+            <li hidden>Multiply by 1,024.</li>
+            <li hidden>7 × 1,024 = ?</li>
+          </ol>
           <div class="num-row"><label class="sr" for="p2">Answer</label><input type="text" id="p2" inputmode="numeric" autocomplete="off"><span class="unit">bytes</span></div>
           <fieldset class="conf"><legend>I am</legend><label><input type="radio" name="c2" value="sure">sure</label><label><input type="radio" name="c2" value="unsure">unsure</label></fieldset>
           <button class="btn check">Check</button>
@@ -371,6 +386,10 @@ flowchart LR
 
         <div class="quiz practice" data-answer="b">
           <p class="q">3. A file is 9,216 bytes. Which calculation gives its size in KiB?</p>
+          <ol class="hints">
+            <li hidden>Bytes to KiB makes the number smaller.</li>
+            <li hidden>A KiB is 1,024 bytes, not 1,000.</li>
+          </ol>
           <fieldset class="choices"><legend class="sr">Choose one</legend>
             <label><input type="radio" name="p3" value="a" data-fb="Multiplying makes the number bigger, but KiB are bigger units, so the count must get smaller.">9,216 × 1,024</label>
             <label><input type="radio" name="p3" value="b" data-fb="Right. 9,216 ÷ 1,024 = 9 KiB.">9,216 ÷ 1,024</label>
@@ -381,8 +400,12 @@ flowchart LR
           <p class="fb" aria-live="polite"></p>
         </div>
 
-        <div class="quiz practice" data-kind="slots" data-hint="Bytes to KiB makes the number smaller.">
+        <div class="quiz practice" data-kind="slots">
           <p class="q">4. Drag a chip into each slot to convert 3,072 bytes to KiB.</p>
+          <ol class="hints">
+            <li hidden>Bytes to KiB makes the number smaller, so pick the operation that shrinks it.</li>
+            <li hidden>Divide by 1,024, not 1,000.</li>
+          </ol>
           <p class="slot-line"><code>3,072</code><span class="slot" role="button" tabindex="0" aria-label="Operation slot" data-answer="div"></span><code>1,024</code> =<span class="slot" role="button" tabindex="0" aria-label="Result slot" data-answer="3"></span>KiB</p>
           <div class="bank" aria-label="Chips. Pick a chip, then pick a slot.">
             <button type="button" class="chip" data-id="mul">×</button>
@@ -396,8 +419,13 @@ flowchart LR
           <p class="explain" hidden><strong>3,072 ÷ 1,024 = 3 KiB.</strong> 3.072 comes from dividing by 1,000, which gives kB.</p>
         </div>
 
-        <div class="quiz practice" data-kind="order" data-answer="kb,kib,1000kib,mib" data-hint="Turn each size into bytes, then compare.">
+        <div class="quiz practice" data-kind="order" data-answer="kb,kib,1000kib,mib">
           <p class="q">5. Drag the sizes into order, smallest first. With a keyboard, focus a size and use the arrow keys.</p>
+          <ol class="hints">
+            <li hidden>Turn each size into bytes, then compare.</li>
+            <li hidden>1 kB is 1,000 bytes. 1 KiB is 1,024 bytes.</li>
+            <li hidden>1 MiB is 1,024 KiB.</li>
+          </ol>
           <ol class="order">
             <li class="chip" tabindex="0" data-id="1000kib">1,000 KiB</li>
             <li class="chip" tabindex="0" data-id="kb">1 kB (1,000 bytes)</li>
@@ -646,14 +674,37 @@ flowchart LR
     var kind = quiz.getAttribute("data-kind") || "choice";
     var predict = quiz.classList.contains("predict");
     var tries = predict ? 1 : Number(quiz.getAttribute("data-tries") || 2);
-    var used = 0, firstRight = null;
+    var used = 0, firstRight = null, hintsAtFirst = 0;
+    // Hints: an <ol class="hints"> of <li hidden> items, opened one at a time. A single data-hint works as a one-item list.
+    var hintList = quiz.querySelector(".hints");
+    if (!hintList && quiz.getAttribute("data-hint") && !predict) {
+      hintList = document.createElement("ol"); hintList.className = "hints";
+      var li = document.createElement("li"); li.hidden = true; li.textContent = quiz.getAttribute("data-hint");
+      hintList.appendChild(li); btn.parentNode.insertBefore(hintList, btn);
+    }
+    var hintItems = hintList && !predict ? Array.prototype.slice.call(hintList.children) : [];
+    var shown = 0, hintBtn = null;
+    function syncHint() {
+      if (!hintBtn) return;
+      hintBtn.disabled = shown >= hintItems.length || !!quiz.dataset.locked;
+      hintBtn.textContent = shown >= hintItems.length ? "No more hints" : "Hint " + (shown + 1) + " of " + hintItems.length;
+    }
+    function showHint() { if (shown < hintItems.length) { hintItems[shown].hidden = false; shown++; } syncHint(); }
+    if (hintItems.length) {
+      hintBtn = document.createElement("button");
+      hintBtn.type = "button"; hintBtn.className = "btn ghost hint";
+      hintBtn.addEventListener("click", showHint);
+      var row = document.createElement("div"); row.className = "actions";
+      btn.parentNode.insertBefore(row, btn); row.appendChild(btn); row.appendChild(hintBtn);
+      syncHint();
+    }
     if (kind === "order") setupOrder(quiz);
     if (kind === "slots") setupSlots(quiz);
 
     btn.addEventListener("click", function () {
       var conf = quiz.querySelector(".conf input:checked");
       var answer = quiz.getAttribute("data-answer");
-      var right, msg = "", hint = quiz.getAttribute("data-hint");
+      var right, msg = "";
       if (kind === "num") {
         var input = quiz.querySelector('input[type="text"]');
         var raw = input.value.replace(/[,\s]/g, "");
@@ -685,7 +736,7 @@ flowchart LR
         msg = pickedRadio.getAttribute("data-fb") || (right ? "Right." : "Not quite.");
       }
       used++;
-      if (firstRight === null) firstRight = right;
+      if (firstRight === null) { firstRight = right; hintsAtFirst = shown; }
       var last = right || used >= tries;
 
       if (!last) {
@@ -695,12 +746,13 @@ flowchart LR
           pickedRadio.parentNode.classList.add("wrong");
         }
         fb.className = "fb bad";
-        fb.textContent = msg + (hint ? " Hint: " + hint : "") + " Try again.";
+        var before = shown; showHint();
+        fb.textContent = msg + (shown > before ? " Hint " + shown + " is open." : "") + " Try again.";
         btn.textContent = "Check again";
         return;
       }
 
-      quiz.dataset.locked = "1";
+      quiz.dataset.locked = "1"; syncHint();
       if (kind === "num") quiz.querySelector('input[type="text"]').readOnly = true;
       if (kind === "choice") quiz.querySelectorAll(".choices input").forEach(function (r) {
         r.disabled = true;
@@ -719,7 +771,7 @@ flowchart LR
         if (!firstRight && conf && conf.value === "sure") msg += " You were sure, so review this rule first.";
         if (firstRight && conf && conf.value === "unsure") msg += " You knew more than you thought.";
         quiz.querySelectorAll(".conf input").forEach(function (r) { r.disabled = true; });
-        results[qi] = { right: firstRight, sureWrong: !firstRight && conf && conf.value === "sure" };
+        results[qi] = { right: firstRight, clean: firstRight && hintsAtFirst === 0, sureWrong: !firstRight && conf && conf.value === "sure" };
       }
       if (predict && !right) msg += " A wrong guess is fine: the explanation below shows why.";
       fb.className = "fb " + (right ? "ok" : "bad");
@@ -731,10 +783,11 @@ flowchart LR
       var keys = Object.keys(results);
       if (keys.length === practiceTotal) {
         var ok = keys.filter(function (k) { return results[k].right; }).length;
+        var clean = keys.filter(function (k) { return results[k].clean; }).length;
         var sw = keys.filter(function (k) { return results[k].sureWrong; }).length;
         var s = document.getElementById("summary");
         s.hidden = false;
-        s.textContent = ok + " of " + practiceTotal + " right on the first try." + (sw ? " " + sw + " confident and wrong: start your review there." : " No confident mistakes.");
+        s.textContent = ok + " of " + practiceTotal + " right on the first try, " + clean + " without hints." + (sw ? " " + sw + " confident and wrong: start your review there." : " No confident mistakes.");
       }
     });
   });

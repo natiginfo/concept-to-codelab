@@ -20,7 +20,9 @@ The page computes the time left from each section's `data-min`. The Back and Nex
 - `data-fb` on each radio is the feedback for that choice. Name the misconception behind each wrong choice.
 - `data-reveal="id"` shows the element with that id after the learner checks.
 - A `.quiz.practice` element counts toward the practice summary in `#summary`, which reports first-try answers.
-- `data-hint` on the `.quiz` element shows after a wrong answer, with one more try. `data-tries` sets the number of tries (default 2). A `.predict` quiz always gets 1 try.
+- `<ol class="hints">` holds 2 or 3 `<li hidden>` hints, from a pointer to the idea to the setup of the last step. Never put the answer in a hint. The script adds a "Hint 1 of N" button, opens the next hint after a wrong answer, and counts answers right without hints in the summary.
+- `data-hint` on the `.quiz` element is a one-hint shortcut, used for recall questions.
+- `data-tries` sets the number of tries (default 2). A `.predict` quiz always gets 1 try and no hints.
 - `data-kind` is `num`, `order` or `slots`. Leave it out for a choice.
 
 ## Step link
@@ -100,11 +102,16 @@ For a choice item, replace `num-row` with a `fieldset class="choices"` as above,
 ```html
 <div class="quiz practice" data-kind="num" data-answer="5">
   <p class="q">1. How many KiB are in 5,120 bytes?</p>
+  <ol class="hints">
+    <li hidden>KiB counts in powers of two, not tens.</li>
+    <li hidden>One KiB is 1,024 bytes, so divide.</li>
+    <li hidden>5,120 ÷ 1,024 = ?</li>
+  </ol>
   <div class="num-row"><label class="sr" for="p1">Answer</label><input type="text" id="p1" inputmode="numeric" autocomplete="off"><span class="unit">KiB</span></div>
   <fieldset class="conf"><legend>I am</legend><label><input type="radio" name="c1" value="sure">sure</label><label><input type="radio" name="c1" value="unsure">unsure</label></fieldset>
   <button class="btn check">Check</button>
   <p class="fb" aria-live="polite"></p>
-  <p class="explain" hidden><strong>5 KiB.</strong> Divide <code>5,120 ÷ 1,024</code>.</p>
+  <p class="explain" hidden><strong>5 KiB.</strong> Divide <code>5,120 ÷ 1,024</code> to count the groups. Check by multiplying <code>5 × 1,024</code>.</p>
 </div>
 ```
 
@@ -113,8 +120,12 @@ For a choice item, replace `num-row` with a `fieldset class="choices"` as above,
 Each slot holds one chip. Learners drag a chip, or tap a chip then a slot. Add one or two distractor chips.
 
 ```html
-<div class="quiz practice" data-kind="slots" data-hint="Bytes to KiB makes the number smaller.">
+<div class="quiz practice" data-kind="slots">
   <p class="q">4. Drag a chip into each slot to convert 3,072 bytes to KiB.</p>
+  <ol class="hints">
+    <li hidden>Bytes to KiB makes the number smaller, so pick the operation that shrinks it.</li>
+    <li hidden>Divide by 1,024, not 1,000.</li>
+  </ol>
   <p class="slot-line"><code>3,072</code><span class="slot" role="button" tabindex="0" aria-label="Operation slot" data-answer="div"></span><code>1,024</code> =<span class="slot" role="button" tabindex="0" aria-label="Result slot" data-answer="3"></span>KiB</p>
   <div class="bank" aria-label="Chips. Pick a chip, then pick a slot.">
     <button type="button" class="chip" data-id="mul">×</button>
@@ -134,8 +145,13 @@ Each slot holds one chip. Learners drag a chip, or tap a chip then a slot. Add o
 `data-answer` lists the `data-id` values in the correct order. Start in a shuffled order. Learners drag, or use the arrow keys.
 
 ```html
-<div class="quiz practice" data-kind="order" data-answer="kb,kib,1000kib,mib" data-hint="Turn each size into bytes, then compare.">
+<div class="quiz practice" data-kind="order" data-answer="kb,kib,1000kib,mib">
   <p class="q">5. Drag the sizes into order, smallest first. With a keyboard, focus a size and use the arrow keys.</p>
+  <ol class="hints">
+    <li hidden>Turn each size into bytes, then compare.</li>
+    <li hidden>1 kB is 1,000 bytes. 1 KiB is 1,024 bytes.</li>
+    <li hidden>1 MiB is 1,024 KiB.</li>
+  </ol>
   <ol class="order">
     <li class="chip" tabindex="0" data-id="1000kib">1,000 KiB</li>
     <li class="chip" tabindex="0" data-id="kb">1 kB (1,000 bytes)</li>

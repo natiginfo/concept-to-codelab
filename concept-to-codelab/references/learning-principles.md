@@ -76,7 +76,7 @@ The core idea: learners remember what they work to retrieve, not what they rerea
 
 **What.** Difficulty helps only when the learner can overcome it with effort.
 
-**Apply.** Teach the prerequisites the step needs. Keep generate-first attempts short. Give feedback after every committed answer. On recall and practice, give a hint after the first wrong answer and one more try before revealing the answer, so the learner retrieves rather than reads. If learners lack the background to attempt a step, teach first and ask afterward.
+**Apply.** Teach the prerequisites the step needs. Keep generate-first attempts short. Give feedback after every committed answer. On recall and practice, offer hints that get more specific, from the idea to the setup of the last step, never the answer. Open the next hint after a wrong answer and allow one more try before revealing the answer, so the learner retrieves rather than reads. Report answers right without hints separately, so hint use stays visible. If learners lack the background to attempt a step, teach first and ask afterward.
 
 ## Avoid
 
