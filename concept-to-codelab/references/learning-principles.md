@@ -10,7 +10,7 @@ The core idea: learners remember what they work to retrieve, not what they rerea
 
 **Why.** An attempt, even a wrong one, primes the learner to notice the explanation that follows and to remember it.
 
-**Apply.** Open each teaching step with one short prediction or attempt. Keep it low stakes and fast. Then explain the right answer and why a likely wrong answer fails.
+**Apply.** Open each teaching step with one or two setup sentences that give the learner enough to reason, then one short prediction. Label it "a guess is fine" and allow one try. A reasoned guess helps more than a blind one. Then explain the right answer and why a likely wrong answer fails.
 
 **Example.** "Before reading on: how many KiB is 3,072 bytes?" Offer choices such as 3, 3.072, and 3,145,728, and record the pick before the explanation. Then work through the division.
 
@@ -76,7 +76,7 @@ The core idea: learners remember what they work to retrieve, not what they rerea
 
 **What.** Difficulty helps only when the learner can overcome it with effort.
 
-**Apply.** Teach the prerequisites the step needs. Keep generate-first attempts short. Give feedback after every committed answer. If learners lack the background to attempt a step, teach first and ask afterward.
+**Apply.** Teach the prerequisites the step needs. Keep generate-first attempts short. Give feedback after every committed answer. On recall and practice, give a hint after the first wrong answer and one more try before revealing the answer, so the learner retrieves rather than reads. If learners lack the background to attempt a step, teach first and ask afterward.
 
 ## Avoid
 
