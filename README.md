@@ -34,7 +34,7 @@ Clone or download this repository. From the root of that checkout, set `target_r
 target_repo='/path/to/your/project'
 destination="$target_repo/.agents/skills/concept-to-codelab"
 if mkdir -p "$(dirname "$destination")" && mkdir "$destination"; then
-  cp -R concept-to-codelab/SKILL.md concept-to-codelab/LICENSE concept-to-codelab/references concept-to-codelab/assets "$destination/"
+  cp -R concept-to-codelab/SKILL.md concept-to-codelab/LICENSE concept-to-codelab/references concept-to-codelab/assets concept-to-codelab/scripts "$destination/"
 fi
 ```
 
@@ -42,7 +42,7 @@ For personal use across projects, copy the skill folder into `~/.agents/skills/`
 
 </details>
 
-The skill itself needs no scripts, connectors, or specific model. Each lesson is one HTML page that opens in any browser. Diagrams load Mermaid from jsDelivr, pinned to an exact version with Subresource Integrity. [Agent Skills specification](https://agentskills.io/specification)
+The skill needs no connectors or specific model. Each lesson is one HTML page that opens in any browser. When Chrome is installed, `scripts/render-check.sh` checks the lesson at phone width. Diagrams load Mermaid from jsDelivr, pinned to an exact version with Subresource Integrity. [Agent Skills specification](https://agentskills.io/specification)
 
 ## Try it
 

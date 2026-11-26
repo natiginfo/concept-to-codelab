@@ -6,16 +6,9 @@
 <title>Convert between bytes and KiB</title>
 <!--
   concept-to-codelab lesson template.
-  Replace the sample lesson with your own steps. Keep these patterns:
-  - Each step is a <section class="step" data-min="N">; add a matching link in the step list.
-  - Every answer is checked by the page. No free-text answer boxes.
-    Choice: <div class="quiz" data-answer="b"> with radios; data-fb on each radio explains it.
-    Number: <div class="quiz practice" data-kind="num" data-answer="7168"> with a text input.
-  - data-reveal="id" shows the element with that id after the learner checks.
-  - Own-words notes and reflection go on paper, with a model answer to reveal.
-  - Diagram: <figure class="diagram"><pre class="mermaid">Mermaid source</pre><figcaption>…</figcaption></figure>.
-    It renders when its step or reveal becomes visible. Add accTitle and accDescr lines as alt text.
-  - Change STORAGE_KEY below so saved progress is per lesson.
+  Fill a copy: replace the text between the LESSON-NAV and LESSON-BODY markers,
+  the sample title, and STORAGE_KEY. Markup patterns and fill steps:
+  references/quiz-patterns.md.
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -99,7 +92,7 @@ table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nu
 th, td { text-align: left; padding: 10px 14px 10px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
 th { font-size: .82rem; color: var(--muted); }
 td a, .content a { color: var(--accent); }
-code { font-family: var(--mono); font-size: .88em; background: var(--code); border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; white-space: nowrap; }
+code { font-family: var(--mono); font-size: .88em; background: var(--code); border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; overflow-wrap: anywhere; }
 ol.work { margin: 0; padding-left: 1.3em; display: grid; gap: 4px; }
 
 .callout { border-radius: 10px; padding: 16px 18px; display: grid; gap: 10px; border: 1px solid var(--line); }
@@ -179,11 +172,13 @@ details[open] > summary { margin-bottom: 8px; }
   <nav class="steps" id="steps" aria-label="Lesson steps">
     <div class="steps-inner">
       <ol>
+<!-- LESSON-NAV:START -->
         <li><a href="#step-1" data-step="1"><span class="num"><span>1</span></span>Overview</a></li>
         <li><a href="#step-2" data-step="2"><span class="num"><span>2</span></span>Bytes to KiB</a></li>
         <li><a href="#step-3" data-step="3"><span class="num"><span>3</span></span>KiB to bytes</a></li>
         <li><a href="#step-4" data-step="4"><span class="num"><span>4</span></span>Practice</a></li>
         <li><a href="#step-5" data-step="5"><span class="num"><span>5</span></span>Review later</a></li>
+<!-- LESSON-NAV:END -->
       </ol>
       <div class="side-foot"><a href="#step-1">Quick reference</a></div>
     </div>
@@ -191,7 +186,7 @@ details[open] > summary { margin-bottom: 8px; }
 
   <main>
     <div class="content">
-
+<!-- LESSON-BODY:START -->
       <section class="step" id="step-1" data-min="1">
         <h1>1. Overview</h1>
         <p class="dur">Duration: 1 min</p>
@@ -338,7 +333,7 @@ flowchart LR
         </ul>
         <details><summary>Review answers</summary><p>4,096 bytes (<code>4 × 1,024</code>). 10 KiB (<code>10,240 ÷ 1,024</code>), because you start in bytes and count groups.</p></details>
       </section>
-
+<!-- LESSON-BODY:END -->
     </div>
     <nav class="pager" aria-label="Step navigation">
       <button class="btn ghost" id="back">Back</button>
