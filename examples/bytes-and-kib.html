@@ -2,35 +2,37 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<script>try { var t = localStorage.getItem("codelab-theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (e) {}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Convert between bytes and KiB</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=JetBrains+Mono:wght@400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400&display=swap">
 <style>
 /* Layout: sticky top bar; numbered step list on the left (drawer on phones); one step at a time with Back/Next, or "Read all". */
 :root {
-  --bg: #ffffff; --side: #f5f6f9; --fg: #1c2130; --muted: #596173; --line: #dde2ea; --code: #f3f5f8;
-  --bar: #22314a; --bar-fg: #ffffff; --bar-muted: #b9c4d8;
-  --accent: #2456c4; --accent-soft: #e7edfb; --on-accent: #ffffff;
-  --ok: #1d7a3b; --ok-soft: #e5f4ea; --bad: #b42318; --bad-soft: #fbe9e7; --warn: #8a5a00; --warn-soft: #fbf1dc;
-  --font: Roboto, "Helvetica Neue", Arial, sans-serif;
+  --bg:#ffffff; --side:#f7f8fa; --fg:#0f172a; --muted:#5b6475; --line:#e5e7eb; --code:#f4f5f7;
+  --accent:#2563eb; --accent-soft:#eef3fe; --on-accent:#fff; --paper:#fbfcfe; --bar:#ffffff;
+  --bar-fg:#0f172a; --bar-muted:#5b6475; --ok:#15803d; --ok-soft:#e8f5ec; --bad:#b91c1c;
+  --bad-soft:#fdecec; --warn:#92400e; --warn-soft:#fdf3e1;
+  --shadow:0 1px 2px rgb(0 0 0/.04),0 4px 14px rgb(0 0 0/.05);
+  --font: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: "JetBrains Mono", Menlo, Consolas, monospace;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #121519; --side: #171b21; --fg: #e5e8ee; --muted: #a0a8b6; --line: #2a303a; --code: #1b2028;
-    --bar: #1a2436; --bar-fg: #f2f5fa; --bar-muted: #9fb0cc;
-    --accent: #8eaaff; --accent-soft: #1f2942; --on-accent: #10172a;
-    --ok: #74d394; --ok-soft: #16281d; --bad: #f28b80; --bad-soft: #2d1a18; --warn: #e6bb62; --warn-soft: #2b2312;
+    --bg:#0b0d12; --side:#10131a; --fg:#e6e8ee; --muted:#9aa3b2; --line:#222733; --code:#141821;
+    --accent:#6b9bff; --accent-soft:#152039; --on-accent:#0b1020; --paper:#121620; --bar:#0b0d12;
+    --bar-fg:#e6e8ee; --bar-muted:#9aa3b2; --ok:#4ade80; --ok-soft:#122219; --bad:#f87171;
+    --bad-soft:#2a1414; --warn:#fbbf24; --warn-soft:#2a2010; --shadow:none;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #121519; --side: #171b21; --fg: #e5e8ee; --muted: #a0a8b6; --line: #2a303a; --code: #1b2028;
-  --bar: #1a2436; --bar-fg: #f2f5fa; --bar-muted: #9fb0cc;
-  --accent: #8eaaff; --accent-soft: #1f2942; --on-accent: #10172a;
-  --ok: #74d394; --ok-soft: #16281d; --bad: #f28b80; --bad-soft: #2d1a18; --warn: #e6bb62; --warn-soft: #2b2312;
+  --bg:#0b0d12; --side:#10131a; --fg:#e6e8ee; --muted:#9aa3b2; --line:#222733; --code:#141821;
+  --accent:#6b9bff; --accent-soft:#152039; --on-accent:#0b1020; --paper:#121620; --bar:#0b0d12;
+  --bar-fg:#e6e8ee; --bar-muted:#9aa3b2; --ok:#4ade80; --ok-soft:#122219; --bad:#f87171;
+  --bad-soft:#2a1414; --warn:#fbbf24; --warn-soft:#2a2010; --shadow:none;
   color-scheme: dark;
 }
 
@@ -86,7 +88,7 @@ table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nu
 th, td { text-align: left; padding: 10px 14px 10px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
 th { font-size: .82rem; color: var(--muted); }
 td a, .content a { color: var(--accent); }
-code { font-family: var(--mono); font-size: .88em; background: var(--code); border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; white-space: nowrap; }
+code { font-family: var(--mono); font-size: .88em; background: var(--code); border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; overflow-wrap: anywhere; }
 ol.work { margin: 0; padding-left: 1.3em; display: grid; gap: 4px; }
 
 .callout { border-radius: 10px; padding: 16px 18px; display: grid; gap: 10px; border: 1px solid var(--line); }
@@ -149,6 +151,39 @@ details[open] > summary { margin-bottom: 8px; }
   .step[hidden] { display: grid !important; }
 }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+/* Look: quiet surfaces, pill controls, a progress line under the top bar, and ✓/✕ next to colour. */
+body { font-size: 17px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+.topbar { border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--bar) 88%, transparent); backdrop-filter: saturate(1.4) blur(8px); }
+.tb-title small { letter-spacing: .12em; font-weight: 600; }
+.bar-btn { border-color: var(--line); border-radius: 999px; padding: 6px 14px; transition: border-color .15s; }
+.bar-btn:hover { border-color: var(--bar-muted); }
+.bar-btn[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+#progress { position: absolute; left: 0; bottom: -1px; height: 2px; width: 0; background: var(--accent); transition: width .4s ease; }
+.steps a { transition: background .15s; }
+.steps a.done .num { background: var(--accent-soft); border-color: var(--accent-soft); }
+.step { max-width: 68ch; gap: 20px; }
+.step h1, .step h2 { letter-spacing: -.02em; }
+.step h1 { font-size: clamp(1.75rem, 3.6vw, 2.4rem); line-height: 1.15; }
+.step h2 { font-size: 1.3rem; margin-top: 16px; }
+.dur { width: fit-content; padding: 3px 10px; border-radius: 999px; background: var(--code); font-size: .82rem; }
+.callout { border-radius: 12px; padding: 18px 20px; }
+.callout.try { box-shadow: inset 3px 0 0 var(--accent); }
+.callout.note { background: var(--paper); border-style: solid; border-color: var(--line); box-shadow: var(--shadow); }
+.choices label { border-radius: 10px; padding: 12px 14px; transition: border-color .15s, background .15s; }
+.choices label:hover { border-color: var(--muted); }
+.choices label.right::after { content: "✓"; margin-left: auto; color: var(--ok); font-weight: 700; }
+.choices label.wrong::after { content: "✕"; margin-left: auto; color: var(--bad); font-weight: 700; }
+.btn { border-radius: 999px; padding: 10px 22px; font-weight: 600; transition: transform .1s, filter .15s; }
+.btn:hover:not(:disabled) { filter: brightness(1.08); }
+.btn:active:not(:disabled) { transform: translateY(1px); }
+.fb { border-radius: 10px; padding: 12px 14px; }
+.fb.ok::before { content: "✓ "; font-weight: 700; }
+.fb.bad::before { content: "✕ "; font-weight: 700; }
+.quiz.practice { border-radius: 12px; background: var(--paper); box-shadow: var(--shadow); }
+.summary, figure.diagram pre.mermaid { border-radius: 12px; }
+.pager { background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: blur(8px); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 
 </head>
@@ -158,8 +193,10 @@ details[open] > summary { margin-bottom: 8px; }
   <div class="tb-title"><small>Codelab</small><strong>Convert between bytes and KiB</strong></div>
   <div class="tb-right">
     <span id="remaining">10 min left</span>
+    <button class="bar-btn" id="theme" aria-label="Theme">◐</button>
     <button class="bar-btn" id="readall" aria-pressed="false">Read all</button>
   </div>
+  <div id="progress" aria-hidden="true"></div>
 </header>
 
 <div class="layout" id="layout">
@@ -466,8 +503,19 @@ flowchart LR
   s.crossOrigin = "anonymous";
   s.onload = function () {
     var root = document.documentElement;
-    var dark = root.dataset.theme === "dark" || (root.dataset.theme !== "light" && matchMedia("(prefers-color-scheme: dark)").matches);
-    mermaid.initialize({ startOnLoad: false, theme: dark ? "dark" : "default", securityLevel: "strict" });
+    window.codelabMermaidInit = function () {
+      // Diagrams take their colours from the page, so they match light and dark.
+      var cs = getComputedStyle(root), v = function (n) { return cs.getPropertyValue(n).trim(); };
+      var dark = root.dataset.theme === "dark" || (root.dataset.theme !== "light" && matchMedia("(prefers-color-scheme: dark)").matches);
+      mermaid.initialize({ startOnLoad: false, securityLevel: "strict", theme: "base", themeVariables: {
+        darkMode: dark, background: v("--code"), fontFamily: v("--font"),
+        primaryColor: v("--bg"), primaryTextColor: v("--fg"), primaryBorderColor: v("--accent"),
+        lineColor: v("--muted"), textColor: v("--fg"), secondaryColor: v("--accent-soft"), tertiaryColor: v("--side"),
+        noteBkgColor: v("--warn-soft"), noteTextColor: v("--fg"), noteBorderColor: v("--warn"),
+        actorBkg: v("--bg"), actorBorder: v("--accent"), actorTextColor: v("--fg"), actorLineColor: v("--muted"),
+        signalColor: v("--fg"), signalTextColor: v("--fg"), labelTextColor: v("--fg") } });
+    };
+    window.codelabMermaidInit();
     document.fonts.ready.then(function () {
       window.codelabDiagrams = function () {
         var nodes = Array.prototype.filter.call(document.querySelectorAll("pre.mermaid:not([data-processed])"), function (n) { return n.getClientRects().length > 0; });
@@ -477,6 +525,39 @@ flowchart LR
     });
   };
   document.head.appendChild(s);
+})();
+</script>
+<script>
+// Theme: the ◐ button cycles system, light and dark. The choice is kept for every lesson.
+// The progress line fills as steps are marked done.
+(function () {
+  var root = document.documentElement, KEY = "codelab-theme", modes = ["system", "light", "dark"];
+  var btn = document.getElementById("theme"), mode = "system";
+  try { mode = localStorage.getItem(KEY) || "system"; } catch (e) {}
+  document.querySelectorAll("pre.mermaid").forEach(function (n) { n.dataset.src = n.textContent; });
+  function redraw() {
+    if (!window.mermaid || !window.codelabMermaidInit) return;
+    window.codelabMermaidInit();
+    document.querySelectorAll("pre.mermaid[data-processed]").forEach(function (n) {
+      n.removeAttribute("data-processed"); n.textContent = n.dataset.src;
+    });
+    if (window.codelabDiagrams) window.codelabDiagrams();
+  }
+  function apply() {
+    if (mode === "system") root.removeAttribute("data-theme"); else root.dataset.theme = mode;
+    btn.title = "Theme: " + mode; btn.setAttribute("aria-label", "Theme: " + mode);
+  }
+  apply();
+  btn.addEventListener("click", function () {
+    mode = modes[(modes.indexOf(mode) + 1) % modes.length];
+    try { localStorage.setItem(KEY, mode); } catch (e) {}
+    apply(); redraw();
+  });
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", redraw);
+  var links = document.querySelectorAll(".steps ol a"), bar = document.getElementById("progress");
+  function progress() { bar.style.width = (100 * document.querySelectorAll(".steps ol a.done").length / links.length) + "%"; }
+  new MutationObserver(progress).observe(document.querySelector(".steps"), { subtree: true, attributes: true, attributeFilter: ["class"] });
+  progress();
 })();
 </script>
 </body>
