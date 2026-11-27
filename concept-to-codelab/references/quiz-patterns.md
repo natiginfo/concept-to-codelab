@@ -10,7 +10,7 @@ Use these snippets to fill a copy of `assets/lesson-template.html`. Read the tem
 4. Replace the sample title `Convert between bytes and KiB`. It appears in `<title>` and in `.tb-title`.
 5. Set `var KEY = "codelab:<lesson-slug>"` on the line marked `STORAGE_KEY`, so saved progress is per lesson.
 
-Keep the visible References section after the step navigation. It is outside the lesson replacement markers and includes the skill repository link. Put any lesson source references in the same section. Generated lessons using another page layout should include the same heading and credit at the end.
+Keep the skill repository link directly below Quick reference in the lesson navigation. This navigation footer is outside the lesson replacement markers, so copying and filling the template preserves it automatically. On phones, both links appear in the Steps menu.
 
 The page computes the time left from each section's `data-min`. The Back and Next buttons, the step list, Read all and saved progress need no edits.
 
