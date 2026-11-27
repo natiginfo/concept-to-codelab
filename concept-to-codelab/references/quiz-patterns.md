@@ -24,6 +24,8 @@ The visual template uses a 640px reading column, 16px body text, 23–24px headi
 - Each radio group needs a `name` that is unique in the page.
 - `data-answer` on the `.quiz` element holds the correct radio `value`, or the number for `data-kind="num"`.
 - `data-fb` on each radio is the feedback for that choice. Name the misconception behind each wrong choice.
+- `data-review="#step-N"` on each quiz points to the step that teaches its reasoning. Wrong-answer feedback includes a named review link, both while a retry remains and after the last attempt. Multiple targets are space-separated, such as `data-review="#step-2 #step-3"`. Put `data-review` on an individual radio to override the target for that distractor. Without a target, the script links to the quiz's own step for compatibility; explicitly map practice and recall items to their teaching steps.
+- Following a review link preserves the exercise's answers, hints and remaining tries, and exposes a worked explanation hidden behind the target step's prediction if needed. This does not mark the prediction answered.
 - `data-reveal="id"` shows the element with that id after the learner checks.
 - A `.quiz.practice` element counts toward the practice summary in `#summary`, which reports first-try answers.
 - `<ol class="hints">` holds 2 or 3 `<li hidden>` hints, from a pointer to the idea to the setup of the last step. Never put the answer in a hint. The script adds a "Hint 1 of N" button, opens the next hint after a wrong answer, and counts answers right without hints in the summary.
@@ -68,7 +70,7 @@ The visual template uses a 640px reading column, 16px body text, 23–24px headi
 Put one or two setup sentences before it. For a recall question about the previous step, use the tag `Recall`, drop `predict` and `data-reveal`, and add `data-hint`.
 
 ```html
-<div class="callout try predict quiz" data-answer="b" data-reveal="s2-work">
+<div class="callout try predict quiz" data-review="#step-2" data-answer="b" data-reveal="s2-work">
   <p class="tag">Predict · a guess is fine</p>
   <p class="q">How many KiB is 3,072 bytes?</p>
   <fieldset class="choices"><legend class="sr">Choose one</legend>
@@ -87,7 +89,7 @@ Put one or two setup sentences before it. For a recall question about the previo
 ## Worth writing down
 
 ```html
-<div class="callout note quiz" data-answer="b" data-reveal="s2-note">
+<div class="callout note quiz" data-review="#step-2" data-answer="b" data-reveal="s2-note">
   <p class="tag">Worth writing down</p>
   <p class="paper">On paper, write the rule in your own words. Then check the key part:</p>
   <p class="q">Divide bytes by ___ to get KiB.</p>
@@ -106,7 +108,7 @@ Put one or two setup sentences before it. For a recall question about the previo
 For a choice item, replace `num-row` with a `fieldset class="choices"` as above, and drop `data-kind`.
 
 ```html
-<div class="quiz practice" data-kind="num" data-answer="5">
+<div class="quiz practice" data-review="#step-2" data-kind="num" data-answer="5">
   <p class="q">1. How many KiB are in 5,120 bytes?</p>
   <ol class="hints">
     <li hidden>KiB counts in powers of two, not tens.</li>
@@ -126,7 +128,7 @@ For a choice item, replace `num-row` with a `fieldset class="choices"` as above,
 Each slot holds one chip. Learners drag a chip, or tap a chip then a slot. Add one or two distractor chips.
 
 ```html
-<div class="quiz practice" data-kind="slots">
+<div class="quiz practice" data-review="#step-2" data-kind="slots">
   <p class="q">4. Drag a chip into each slot to convert 3,072 bytes to KiB.</p>
   <ol class="hints">
     <li hidden>Bytes to KiB makes the number smaller, so pick the operation that shrinks it.</li>
@@ -151,7 +153,7 @@ Each slot holds one chip. Learners drag a chip, or tap a chip then a slot. Add o
 `data-answer` lists the `data-id` values in the correct order. Start in a shuffled order. Learners drag, or use the arrow keys.
 
 ```html
-<div class="quiz practice" data-kind="order" data-answer="kb,kib,1000kib,mib">
+<div class="quiz practice" data-review="#step-2 #step-3" data-kind="order" data-answer="kb,kib,1000kib,mib">
   <p class="q">5. Drag the sizes into order, smallest first. With a keyboard, focus a size and use the arrow keys.</p>
   <ol class="hints">
     <li hidden>Turn each size into bytes, then compare.</li>
