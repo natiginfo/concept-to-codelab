@@ -211,7 +211,7 @@ body { margin: 0; font-size: 16px; line-height: 1.55; -webkit-font-smoothing: an
 .steps a { min-height: 44px; border-radius: 4px; font-size: 15px; padding: 10px 12px; }
 .steps .num { display: none; }
 .steps a[aria-current="step"] { font-weight: 600; }
-.side-foot { margin: 0 12px; padding: 24px 0 0; }
+.side-foot { display: grid; gap: 8px; margin: 0 12px; padding: 24px 0 0; }
 .side-foot a { min-height: 44px; text-decoration: underline; text-underline-offset: 3px; }
 main { display: block; }
 .content { padding: 48px 32px 24px; }
@@ -261,10 +261,6 @@ figure.grouping figcaption { text-align: center; color: var(--fg); font-size: 16
 .pager { position: static; max-width: 704px; margin: 0 auto; padding: 20px 32px 32px; border: 0; background: transparent; }
 .pager .btn { background: transparent; border-color: transparent; color: var(--accent); font-weight: 400; }
 .pager #pos { font-size: 13px; }
-.lesson-references { max-width: 640px; margin: 0 auto 32px; padding-top: 24px; border-top: 1px solid var(--line); }
-.lesson-references h2 { margin: 0 0 12px; font-size: 19px; font-weight: 600; }
-.lesson-references ul { margin: 0; padding-left: 20px; }
-.lesson-references a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
 .summary, .chip, .slot, .bank { box-shadow: none; border-radius: 6px; }
 details > summary { min-height: 44px; padding-block: 10px; font-weight: 600; }
 .reading-all .lesson-progress { display: none; }
@@ -293,7 +289,6 @@ details > summary { min-height: 44px; padding-block: 10px; font-weight: 600; }
   .step h2, .quiz .q { font-size: 19px; }
   .predict .check { width: 100%; }
   .pager { padding: 12px 20px 24px; }
-  .lesson-references { margin: 0 20px 24px; }
   .meta div { grid-template-columns: 1fr; gap: 2px; }
   .meta { gap: 16px; }
   .lesson-completion { margin-inline: 20px; }
@@ -338,7 +333,10 @@ details > summary { min-height: 44px; padding-block: 10px; font-weight: 600; }
         <li><a href="#step-5" data-step="5"><span class="num"><span>5</span></span>Review later</a></li>
 <!-- LESSON-NAV:END -->
       </ol>
-      <div class="side-foot"><a href="#step-1">Quick reference</a></div>
+      <div class="side-foot">
+        <a href="#step-1">Quick reference</a>
+        <a href="https://github.com/natiginfo/concept-to-codelab">Try Concept to Codelab skill</a>
+      </div>
     </div>
   </nav>
 
@@ -569,10 +567,6 @@ flowchart LR
       <span id="pos">Step 1 of 5</span>
       <button class="btn ghost" id="next">Next</button>
     </nav>
-    <footer class="lesson-references" aria-labelledby="lesson-references-title">
-      <h2 id="lesson-references-title">References</h2>
-      <ul><li><a href="https://github.com/natiginfo/concept-to-codelab">Try Concept to Codelab skill</a></li></ul>
-    </footer>
   </main>
 </div>
 
