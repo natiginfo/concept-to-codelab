@@ -241,6 +241,8 @@ main { display: block; }
 .fb { border-radius: 6px; padding: 12px 16px; }
 .fb.ok::before { content: "✓ "; }
 .fb.bad::before { content: "✕ "; }
+.review-links { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 8px; }
+.review-links a { display: inline-flex; align-items: center; min-height: 44px; color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 .predict[data-locked] .check, .predict[data-locked] .prediction-next { display: none; }
 .prediction-next { color: var(--muted); font-size: 14px; }
 figure.diagram pre.mermaid { border: 0; background: transparent; padding: 8px 0; }
@@ -371,7 +373,7 @@ bytes`"] ~~~ C["`1,024
 bytes`"]
           </pre>
         </figure>
-        <div class="callout try predict quiz" data-answer="b" data-reveal="s2-work">
+        <div class="callout try predict quiz" data-answer="b" data-reveal="s2-work" data-review="#step-2">
           <p class="tag">Make a prediction. A guess is fine.</p>
           <p class="q">How many KiB is that?</p>
           <fieldset class="choices"><legend class="sr">Choose one</legend>
@@ -400,7 +402,7 @@ flowchart LR
             </pre>
             <figcaption>Follow the arrow from bytes to KiB: you divide, so the number gets smaller.</figcaption>
           </figure>
-          <div class="callout note quiz" data-answer="b" data-reveal="s2-note">
+          <div class="callout note quiz" data-answer="b" data-reveal="s2-note" data-review="#step-2">
             <p class="tag">Worth writing down</p>
             <p class="paper">On paper, write the rule in your own words. Then check the key part:</p>
             <p class="q">Divide bytes by ___ to get KiB.</p>
@@ -419,7 +421,7 @@ flowchart LR
       <section class="step" id="step-3" data-min="2">
         <h1>Convert KiB to bytes</h1>
         <p class="dur">Duration: 2 min</p>
-        <div class="callout try quiz" data-answer="b" data-hint="KiB counts in powers of two: 2 to the 10th.">
+        <div class="callout try quiz" data-answer="b" data-hint="KiB counts in powers of two: 2 to the 10th." data-review="#step-2">
           <p class="tag">Recall</p>
           <p class="q">Without looking back: how many bytes are in 1 KiB?</p>
           <fieldset class="choices"><legend class="sr">Choose one</legend>
@@ -431,7 +433,7 @@ flowchart LR
           <p class="fb" aria-live="polite"></p>
         </div>
         <p>To convert 2 KiB to bytes, count the bytes in two groups of 1,024. <code>2 × 1,024 = 2,048</code>, so <strong>2 KiB = 2,048 bytes</strong>.</p>
-        <div class="callout note quiz" data-answer="a" data-reveal="s3-note">
+        <div class="callout note quiz" data-answer="a" data-reveal="s3-note" data-review="#step-3">
           <p class="tag">Worth writing down</p>
           <p class="paper">On paper, write the rule in your own words. Then check the key part:</p>
           <p class="q">To get bytes from KiB, ___ by 1,024.</p>
@@ -450,7 +452,7 @@ flowchart LR
         <p class="dur">Duration: 5 min</p>
         <p>Answer from memory. Pick how sure you are, then check. Use the <a href="#step-1">quick reference</a> only after you check.</p>
 
-        <div class="quiz practice" data-kind="num" data-answer="5">
+        <div class="quiz practice" data-kind="num" data-answer="5" data-review="#step-2">
           <p class="q">1. How many KiB are in 5,120 bytes?</p>
           <ol class="hints">
             <li hidden>KiB counts in powers of two, not tens.</li>
@@ -464,7 +466,7 @@ flowchart LR
           <p class="explain" hidden><strong>5 KiB.</strong> Divide <code>5,120 ÷ 1,024</code> to count the groups. Check by multiplying <code>5 × 1,024</code>.</p>
         </div>
 
-        <div class="quiz practice" data-kind="num" data-answer="7168">
+        <div class="quiz practice" data-kind="num" data-answer="7168" data-review="#step-3">
           <p class="q">2. How many bytes are in 7 KiB?</p>
           <ol class="hints">
             <li hidden>KiB to bytes makes the number bigger.</li>
@@ -478,7 +480,7 @@ flowchart LR
           <p class="explain" hidden><strong>7,168 bytes.</strong> Multiply <code>7 × 1,024</code>. Dividing would count groups when you already know there are seven.</p>
         </div>
 
-        <div class="quiz practice" data-answer="b">
+        <div class="quiz practice" data-answer="b" data-review="#step-2">
           <p class="q">3. A file is 9,216 bytes. Which calculation gives its size in KiB?</p>
           <ol class="hints">
             <li hidden>Bytes to KiB makes the number smaller.</li>
@@ -494,7 +496,7 @@ flowchart LR
           <p class="fb" aria-live="polite"></p>
         </div>
 
-        <div class="quiz practice" data-kind="slots">
+        <div class="quiz practice" data-kind="slots" data-review="#step-2">
           <p class="q">4. Drag a chip into each slot to convert 3,072 bytes to KiB.</p>
           <ol class="hints">
             <li hidden>Bytes to KiB makes the number smaller, so pick the operation that shrinks it.</li>
@@ -513,7 +515,7 @@ flowchart LR
           <p class="explain" hidden><strong>3,072 ÷ 1,024 = 3 KiB.</strong> 3.072 comes from dividing by 1,000, which gives kB.</p>
         </div>
 
-        <div class="quiz practice" data-kind="order" data-answer="kb,kib,1000kib,mib">
+        <div class="quiz practice" data-kind="order" data-answer="kb,kib,1000kib,mib" data-review="#step-2 #step-3">
           <p class="q">5. Drag the sizes into order, smallest first. With a keyboard, focus a size and use the arrow keys.</p>
           <ol class="hints">
             <li hidden>Turn each size into bytes, then compare.</li>
@@ -632,6 +634,15 @@ flowchart LR
     var a = e.target.closest('a[href^="#step-"]');
     if (!a) return;
     e.preventDefault();
+    // After a wrong answer, reviewing should expose the worked explanation
+    // even when the learner originally skipped that step's prediction.
+    if (a.closest(".review-links")) {
+      var target = document.getElementById(a.getAttribute("href").slice(1));
+      if (target) target.querySelectorAll(".predict[data-reveal]").forEach(function (q) {
+        var explanation = document.getElementById(q.getAttribute("data-reveal"));
+        if (explanation && target.contains(explanation)) explanation.hidden = false;
+      });
+    }
     go(Number(a.getAttribute("href").replace("#step-", "")));
   });
   document.getElementById("back").addEventListener("click", function () { go(state.step - 1); });
@@ -828,6 +839,25 @@ flowchart LR
     var predict = quiz.classList.contains("predict");
     var tries = predict ? 1 : Number(quiz.getAttribute("data-tries") || 2);
     var used = 0, firstRight = null, hintsAtFirst = 0;
+    // Review targets are lesson-local step IDs, optionally specific to a distractor.
+    function addReviewLinks(choice) {
+      var refs = (choice && choice.getAttribute("data-review")) || quiz.getAttribute("data-review");
+      if (!refs) refs = "#" + quiz.closest(".step").id;
+      var row = document.createElement("span"); row.className = "review-links";
+      var seen = {};
+      refs.trim().split(/\s+/).forEach(function (ref) {
+        if (ref.charAt(0) !== "#" || seen[ref]) return;
+        var target = document.getElementById(ref.slice(1));
+        if (!target || !target.classList.contains("step")) return;
+        seen[ref] = true;
+        var nav = links.find(function (a) { return a.getAttribute("href") === ref; });
+        var title = nav ? nav.lastChild.textContent.trim() : target.querySelector("h1").textContent;
+        var a = document.createElement("a"); a.href = ref;
+        a.textContent = "Review: " + title;
+        row.appendChild(a);
+      });
+      if (row.childNodes.length) fb.appendChild(row);
+    }
     // Hints: an <ol class="hints"> of <li hidden> items, opened one at a time. A single data-hint works as a one-item list.
     var hintList = quiz.querySelector(".hints");
     if (!hintList && quiz.getAttribute("data-hint") && !predict) {
@@ -901,6 +931,7 @@ flowchart LR
         fb.className = "fb bad";
         var before = shown; showHint();
         fb.textContent = msg + (shown > before ? " Hint " + shown + " is open." : "") + " Try again.";
+        addReviewLinks(pickedRadio);
         btn.textContent = "Check again";
         return;
       }
@@ -929,6 +960,7 @@ flowchart LR
       if (predict && !right) msg += " A wrong guess is fine: the explanation below shows why.";
       fb.className = "fb " + (right ? "ok" : "bad");
       fb.textContent = msg;
+      if (!right) addReviewLinks(pickedRadio);
       btn.disabled = true;
       var ex = quiz.querySelector(".explain"); if (ex) ex.hidden = false;
       var rv = quiz.getAttribute("data-reveal"); if (rv) document.getElementById(rv).hidden = false;
