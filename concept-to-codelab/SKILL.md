@@ -67,8 +67,6 @@ Read [references/visuals.md](references/visuals.md) for source preferences, pres
 
 ## Deliver and verify
 
-End every generated lesson page with a visible **References** section after lesson navigation. Include "Generated with the Concept to Codelab skill", linking the skill name to `https://github.com/natiginfo/concept-to-codelab`, alongside any lesson source references. Use normal body text and a clear section heading so the credit is easy to find. Preserve the template's References section when filling a copy, and include the same section when using a project's own lesson layout.
-
 When delegation is authorized and model choice is available, a smaller, faster model is suitable for bounded tasks such as inventorying files and extracting slide text to page-referenced Markdown. Keep decisions about what to teach, checking calculations, interpreting requirements, and final validation with the main model.
 
 In a repository, edit the maintained source and regenerate any required outputs using the project's workflow. Check worked results, practice answers and feedback, and links. For an adaptation, check representative steps, navigation, and existing saved progress where possible. Report any checks you could not run.
