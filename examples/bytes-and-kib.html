@@ -714,24 +714,39 @@ flowchart LR
 
   // Drag with pointer events, so mouse, touch and pen all work. A short movement counts as a click.
   function draggable(chip, quiz, onMove, onDrop) {
+    // Listen on window, not on the chip: reordering moves the chip in the DOM, and no pointer capture is needed.
     chip.addEventListener("pointerdown", function (e) {
       if (quiz.dataset.locked || e.button > 0) return;
-      var sx = e.clientX, sy = e.clientY, r = chip.getBoundingClientRect(), dragging = false;
-      var gx = sx - r.left, gy = sy - r.top;
-      try { chip.setPointerCapture(e.pointerId); } catch (err) {}
+      var id = e.pointerId, sx = e.clientX, sy = e.clientY, r = chip.getBoundingClientRect(), dragging = false, done = false;
+      var gx = sx - r.left, gy = sy - r.top, lx = sx, ly = sy, raf = 0;
+      function clamp(v, max) { return Math.max(0, Math.min(max - 1, v)); }
       function move(ev) {
-        if (!dragging && Math.abs(ev.clientX - sx) + Math.abs(ev.clientY - sy) < 6) return;
+        if (ev.pointerId !== id) return;
+        if (ev.buttons === 0) { end(ev); return; }   // released outside the frame: no pointerup came
+        lx = clamp(ev.clientX, innerWidth); ly = clamp(ev.clientY, innerHeight);
+        if (!dragging && Math.abs(lx - sx) + Math.abs(ly - sy) < 6) return;
         if (!dragging) { dragging = true; chip.classList.add("dragging"); chip.style.transition = "none"; }
-        onMove(ev.clientX, ev.clientY, gx, gy);
+        if (!raf) raf = requestAnimationFrame(function () { raf = 0; if (!done) onMove(lx, ly, gx, gy); });
       }
-      function up(ev) {
-        chip.removeEventListener("pointermove", move); chip.removeEventListener("pointerup", up); chip.removeEventListener("pointercancel", up);
+      function end(ev) {
+        if (done || (ev.pointerId !== undefined && ev.pointerId !== id)) return;
+        done = true;
+        cancelAnimationFrame(raf);
+        window.removeEventListener("pointermove", move);
+        window.removeEventListener("pointerup", end);
+        window.removeEventListener("pointercancel", end);
+        window.removeEventListener("blur", end);
         if (!dragging) return;
         chip.classList.remove("dragging"); chip.dataset.dragged = "1";
         setTimeout(function () { delete chip.dataset.dragged; }, 0);
-        onDrop(ev.clientX, ev.clientY);
+        // Only a real release drops. A cancel, a blur or a release outside the frame snaps back.
+        if (ev.type === "pointerup") onDrop(lx, ly);
+        else { quiz.querySelectorAll(".near").forEach(function (n) { n.classList.remove("near"); }); flip([chip], function () {}); }
       }
-      chip.addEventListener("pointermove", move); chip.addEventListener("pointerup", up); chip.addEventListener("pointercancel", up);
+      window.addEventListener("pointermove", move);
+      window.addEventListener("pointerup", end);
+      window.addEventListener("pointercancel", end);
+      window.addEventListener("blur", end);
     });
   }
   function place(chip, x, y, gx, gy) {
@@ -747,7 +762,9 @@ flowchart LR
       draggable(chip, quiz, function (x, y, gx, gy) {
         var others = Array.prototype.filter.call(list.children, function (c) { return c !== chip; });
         var target = null;
-        others.forEach(function (o) { var b = o.getBoundingClientRect(); if (target === null && y < b.top + b.height / 2) target = o; });
+        // Use layout positions (offsetTop), not animated rects, so the target does not jitter mid-FLIP.
+        var top0 = list.getBoundingClientRect().top - list.offsetTop;
+        others.forEach(function (o) { if (target === null && y < top0 + o.offsetTop + o.offsetHeight / 2) target = o; });
         if (chip.nextElementSibling !== target && target !== chip) flip(others, function () { list.insertBefore(chip, target); });
         place(chip, x, y, gx, gy);
       }, function () { flip([chip], function () {}); });
@@ -800,7 +817,8 @@ flowchart LR
           // Magnet: pull the chip most of the way to the slot it is near.
           var b = s.getBoundingClientRect(), r = chip.getBoundingClientRect();
           var cx = b.left + (b.width - r.width) / 2 + gx, cy = b.top + (b.height - r.height) / 2 + gy;
-          x = x + (cx - x) * .6; y = y + (cy - y) * .6;
+          var k = .7 * (1 - Math.hypot(x - cx, y - cy) / 64);
+          if (k > 0) { x += (cx - x) * k; y += (cy - y) * k; }
         }
         place(chip, x, y, gx, gy);
       }, function (x, y) {
